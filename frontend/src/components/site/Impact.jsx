@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { METRICS } from "../../data";
+import { useLang } from "../../i18n";
 import { reveal, stagger, viewportOnce } from "../../lib/motion";
 
 const Counter = ({ value, prefix, suffix, active }) => {
@@ -29,6 +29,7 @@ const Counter = ({ value, prefix, suffix, active }) => {
 };
 
 export const Impact = () => {
+  const { t } = useLang();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.4 });
 
@@ -41,7 +42,7 @@ export const Impact = () => {
         viewport={viewportOnce}
         className="fx-container grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 py-16 md:py-20"
       >
-        {METRICS.map((m, i) => (
+        {t.metrics.map((m, i) => (
           <motion.div key={i} variants={reveal} data-testid={`metric-${i}`} className="flex flex-col">
             <span
               className="tabular-nums"

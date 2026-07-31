@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLang } from "../../i18n";
 
 const KEY = "fulcrum_cookie_consent";
 
 export const CookieBanner = () => {
+  const { t } = useLang();
+  const ck = t.cookie;
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem(KEY)) {
-      const t = setTimeout(() => setShow(true), 900);
-      return () => clearTimeout(t);
+      const timer = setTimeout(() => setShow(true), 900);
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -30,18 +33,16 @@ export const CookieBanner = () => {
           className="fixed bottom-4 inset-x-4 md:inset-x-auto md:right-6 md:max-w-[420px] z-[60] rounded-[20px] border bg-white p-6"
           style={{ borderColor: "var(--hairline)", borderWidth: 1, boxShadow: "0 8px 40px rgba(0,0,0,0.08)" }}
           role="dialog"
-          aria-label="Consenso cookie"
+          aria-label={ck.title}
         >
-          <p className="font-medium">Rispettiamo la tua privacy</p>
-          <p className="mt-2 text-[0.92rem]" style={{ color: "var(--muted)" }}>
-            Usiamo solo cookie essenziali di default. Puoi accettare tutti i cookie per aiutarci a migliorare l'esperienza.
-          </p>
+          <p className="font-medium">{ck.title}</p>
+          <p className="mt-2 text-[0.92rem]" style={{ color: "var(--muted)" }}>{ck.body}</p>
           <div className="mt-5 flex gap-3">
             <button data-testid="cookie-essential" onClick={() => decide("essential")} className="btn btn-ghost !py-2.5 !px-5 !text-[0.95rem]">
-              Solo essenziali
+              {ck.essential}
             </button>
             <button data-testid="cookie-accept" onClick={() => decide("all")} className="btn btn-primary !py-2.5 !px-5 !text-[0.95rem]">
-              Accetta tutti
+              {ck.accept}
             </button>
           </div>
         </motion.div>

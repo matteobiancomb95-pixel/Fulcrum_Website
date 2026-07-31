@@ -1,21 +1,21 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { SERVICES, MANIFESTO } from "../../data";
+import { useLang } from "../../i18n";
 import { reveal, stagger, viewportOnce } from "../../lib/motion";
 import { FulcrumMark } from "./Logo";
 
 export const Services = () => {
+  const { t } = useLang();
   const go = () => document.querySelector("#parliamone")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section id="servizi" data-testid="services" className="section-y">
       <div className="fx-container">
-        {/* Numbered manifesto chapters */}
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce} className="max-w-[62ch]">
-          <motion.p variants={reveal} className="eyebrow mb-6">Il principio</motion.p>
+          <motion.p variants={reveal} className="eyebrow mb-6">{t.manifesto.eyebrow}</motion.p>
           <div className="grid gap-8 md:gap-6">
-            {MANIFESTO.map((m) => (
+            {t.manifesto.items.map((m) => (
               <motion.div key={m.n} variants={reveal} className="flex gap-5 md:gap-7 items-baseline">
                 <span className="tabular-nums shrink-0 font-medium" style={{ color: "var(--cta)", fontSize: "0.95rem" }}>{m.n}</span>
                 <p className="m-0" style={{ fontSize: "clamp(1.25rem, 2.2vw, 1.75rem)", fontWeight: 500, letterSpacing: "-0.01em" }}>
@@ -27,17 +27,16 @@ export const Services = () => {
           </div>
         </motion.div>
 
-        {/* Two-pillar service cards */}
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce} className="mt-20 md:mt-28">
           <motion.div variants={reveal} className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div>
-              <p className="eyebrow mb-4">I due pilastri</p>
-              <h2 className="h2 max-w-[14ch]">Persone e processi, un unico fulcro.</h2>
+              <p className="eyebrow mb-4">{t.services.eyebrow}</p>
+              <h2 className="h2 max-w-[14ch]">{t.services.heading}</h2>
             </div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {SERVICES.map((s, i) => (
+            {t.services.cards.map((s, i) => (
               <motion.article
                 key={i}
                 variants={reveal}

@@ -14,7 +14,8 @@ Production-ready single-page marketing site for **Fulcrum**, an Italian AI trans
 - 20px cards, 999px pill buttons, 1200px container, `clamp(80px,12vw,160px)` section rhythm.
 
 ## Implemented (2026-07-31)
-- Sticky header (transparent→solid on scroll, hairline border), centred nav, violet pill CTA, EN toggle stub, mobile menu.
+- Sticky header (transparent→solid on scroll, hairline border), centred nav, violet pill CTA, mobile menu.
+- **Full i18n system** (`src/i18n.jsx`): functional IT/EN toggle in header (highlights active locale, updates `<html lang>`), complete English translations of every string across all sections + form + errors + cookie banner. Brand payoff "Driving AI Adoption" kept identical in both languages by design.
 - Hero: full-height, masked line-by-line reveal of "Driving AI Adoption", parallax SVG lever geometry cropped by viewport, two CTAs, scroll cue.
 - Impact strip: 4 metrics counting up on scroll into view (< 6 mesi, +70%, 90%, 24/7).
 - Manifesto: 3 numbered chapters (lever/load/pivot).
@@ -29,7 +30,6 @@ Production-ready single-page marketing site for **Fulcrum**, an Italian AI trans
 - SEO: meta, Open Graph, Twitter, JSON-LD Organization. Accessibility: semantic HTML, focus rings, skip link, prefers-reduced-motion, aria labels, data-testids.
 
 ## Backlog (P1/P2)
-- Functional EN translation (currently stub).
 - Real form submission (DB store / email via Resend) if lead capture is needed.
 - Dedicated service detail pages / resources content.
 - Favicon + webmanifest asset set from brand kit.

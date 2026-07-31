@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { FulcrumLogo } from "./Logo";
-import { NAV } from "../../data";
+import { useLang } from "../../i18n";
 
 export const Header = () => {
+  const { lang, toggle, t } = useLang();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState("IT");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -37,7 +37,7 @@ export const Header = () => {
         </button>
 
         <nav className="hidden lg:flex items-center gap-9 absolute left-1/2 -translate-x-1/2" aria-label="Principale">
-          {NAV.map((n) => (
+          {t.nav.map((n) => (
             <button
               key={n.href}
               data-testid={`nav-${n.href.slice(1)}`}
@@ -53,22 +53,23 @@ export const Header = () => {
         <div className="flex items-center gap-3">
           <button
             data-testid="lang-toggle"
-            onClick={() => setLang((l) => (l === "IT" ? "EN" : "IT"))}
+            onClick={toggle}
             className="hidden sm:inline-flex text-[0.8rem] font-medium tracking-wide px-2 py-1 rounded-full"
             style={{ color: "var(--muted)" }}
-            aria-label="Cambia lingua"
-            title="Language toggle (stub)"
+            aria-label="Change language / Cambia lingua"
           >
-            {lang} / {lang === "IT" ? "EN" : "IT"}
+            <span style={{ color: lang === "it" ? "var(--cta)" : "var(--muted)" }}>IT</span>
+            <span className="mx-1">/</span>
+            <span style={{ color: lang === "en" ? "var(--cta)" : "var(--muted)" }}>EN</span>
           </button>
           <button data-testid="cta-header" onClick={() => go("#parliamone")} className="btn btn-primary !py-2.5 !px-6 hidden sm:inline-flex">
-            Parliamone
+            {t.header.cta}
           </button>
           <button
             data-testid="menu-toggle"
             className="lg:hidden p-2"
             onClick={() => setOpen((o) => !o)}
-            aria-label={open ? "Chiudi menu" : "Apri menu"}
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
             {open ? <X size={24} /> : <Menu size={24} />}
@@ -88,12 +89,15 @@ export const Header = () => {
             style={{ background: "var(--bg)", borderBottom: "1px solid var(--hairline)" }}
           >
             <div className="fx-container py-6 flex flex-col gap-4">
-              {NAV.map((n) => (
+              {t.nav.map((n) => (
                 <button key={n.href} onClick={() => go(n.href)} className="text-left text-lg font-medium">
                   {n.label}
                 </button>
               ))}
-              <button onClick={() => go("#parliamone")} className="btn btn-primary mt-2">Parliamone</button>
+              <button onClick={toggle} className="text-left text-sm font-medium" style={{ color: "var(--cta)" }}>
+                {lang === "it" ? "Switch to English" : "Passa all'italiano"}
+              </button>
+              <button onClick={() => go("#parliamone")} className="btn btn-primary mt-2">{t.header.cta}</button>
             </div>
           </motion.div>
         )}
