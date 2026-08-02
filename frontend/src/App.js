@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Lenis from "lenis";
 import { LanguageProvider, useLang } from "@/i18n";
 import { Header } from "@/components/site/Header";
@@ -11,6 +12,7 @@ import { Trust } from "@/components/site/Trust";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 import { CookieBanner } from "@/components/site/CookieBanner";
+import AdminPage from "@/admin/AdminPage";
 
 function Site() {
   const { t } = useLang();
@@ -54,7 +56,12 @@ function Site() {
 function App() {
   return (
     <LanguageProvider>
-      <Site />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Site />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </BrowserRouter>
     </LanguageProvider>
   );
 }

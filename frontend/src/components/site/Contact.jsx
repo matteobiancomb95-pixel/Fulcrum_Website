@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
@@ -17,6 +17,8 @@ export const Contact = () => {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  const mountedAt = useRef(Date.now());
+  const honeypot = useRef("");
 
   const set = (k, v) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -45,7 +47,12 @@ export const Contact = () => {
     setSubmitting(true);
     setServerError("");
     try {
-      await axios.post(`${API}/contact`, { ...form, lang });
+      await axios.post(`${API}/contact`, {
+        ...form,
+        lang,
+        website: honeypot.current,
+        elapsed_ms: Date.now() - mountedAt.current,
+      });
       setSent(true);
     } catch (err) {
       setServerError(c.errorGeneric);
@@ -82,6 +89,16 @@ export const Contact = () => {
             </motion.div>
           ) : (
             <motion.form variants={reveal} data-testid="contact-form" onSubmit={onSubmit} noValidate className="grid gap-7">
+              {/* honeypot — hidden from humans, bots fill it */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                onChange={(e) => { honeypot.current = e.target.value; }}
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+              />
               <div className="grid sm:grid-cols-2 gap-7">
                 <div>
                   <label htmlFor="nome" className={lbl} style={lblStyle}>{c.labels.nome}</label>

@@ -244,11 +244,27 @@ export const CONTENT = {
 
 const LangContext = createContext(null);
 
+const LANG_KEY = "fulcrum_lang";
+
+const getInitialLang = () => {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === "it" || saved === "en") return saved;
+  } catch (e) { /* ignore */ }
+  const nav = (typeof navigator !== "undefined" && (navigator.language || navigator.userLanguage || "it")).toLowerCase();
+  return nav.startsWith("it") ? "it" : "en";
+};
+
 export const LanguageProvider = ({ children }) => {
-  const [lang, setLang] = useState("it");
-  const toggle = () => setLang((l) => (l === "it" ? "en" : "it"));
+  const [lang, setLangState] = useState(getInitialLang);
+  const setLang = (l) => {
+    setLangState(l);
+    try { localStorage.setItem(LANG_KEY, l); } catch (e) { /* ignore */ }
+  };
+  const toggle = () => setLang(lang === "it" ? "en" : "it");
   useEffect(() => {
     document.documentElement.lang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* ignore */ }
   }, [lang]);
   return (
     <LangContext.Provider value={{ lang, setLang, toggle, t: CONTENT[lang] }}>
