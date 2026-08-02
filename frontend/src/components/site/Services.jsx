@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useLang } from "../../i18n";
@@ -7,7 +8,6 @@ import { FulcrumMark } from "./Logo";
 
 export const Services = () => {
   const { t } = useLang();
-  const go = () => document.querySelector("#parliamone")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section id="servizi" data-testid="services" className="section-y">
@@ -62,10 +62,10 @@ export const Services = () => {
                   ))}
                 </ul>
 
-                <button onClick={go} data-testid={`service-link-${i}`} className="mt-9 inline-flex items-center gap-2 font-medium self-start" style={{ color: "var(--cta)" }}>
+                <Link to={s.href} data-testid={`service-link-${i}`} className="mt-9 inline-flex items-center gap-2 font-medium self-start" style={{ color: "var(--cta)" }}>
                   {s.link}
                   <ArrowUpRight size={18} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </button>
+                </Link>
               </motion.article>
             ))}
           </div>

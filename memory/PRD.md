@@ -4,17 +4,20 @@
 Production-ready single-page marketing site for **Fulcrum**, an Italian AI transformation consultancy. Italian language, EN toggle stub, anchor navigation, fully responsive, strict 4-colour palette. Reference tone/architecture: yellowtech.it (not copied).
 
 ## Architecture
-- **Frontend-only** React app (CRA + craco). No backend/DB used (per user choice: form is client-side validation only).
-- Motion: `framer-motion` (scroll reveals, hero masked line-reveal, micro-interactions) + `lenis` (smooth momentum scroll, disabled under prefers-reduced-motion).
-- Geometry: brand lever/pivot built as SVG (`components/site/Logo.jsx`), no stock photography.
-- Font: Poppins (400/500/700) via Google Fonts.
+- **Multi-page** React app (react-router). Shared layout (Header + Outlet + Footer + CookieBanner + Lenis). Routes: `/`, `/ai-adoption`, `/ai-agents`, `/servizi-digitali`, `/settori`, `/chi-siamo`, `/admin`.
+- All page content is bilingual IT/EN via `src/i18n.jsx` (site chrome) + `src/content/pagesIt.js` / `pagesEn.js` (page bodies), selected by `usePages()`.
+- Motion: `framer-motion` + `lenis`. Geometry: brand lever/pivot SVG. Font: Poppins.
 
 ## Design system (STRICT)
 - Colours only: `--cta #5B3DF5`, `--bg #FFFFFF`, `--copy #000000`, `--copy-on-cta #FFFFFF`. Derivatives: black opacities 0.60/0.40/0.10, `#4A2FD6` CTA hover. Tokens in `src/index.css`.
 - 20px cards, 999px pill buttons, 1200px container, `clamp(80px,12vw,160px)` section rhythm.
 
 ## Implemented (2026-07-31)
-- **Language memory + auto-detect** (2026-08-02): chosen language persists in `localStorage` (`fulcrum_lang`); first-time visitors get EN automatically if their browser isn't Italian, otherwise IT.
+- **Multi-page restructure + header dropdown** (2026-08-02): Header nav = Servizi (dropdown: AI Adoption /ai-adoption, Agenti AI /ai-agents, Servizi Digitali /servizi-digitali), Settori /settori, Chi siamo /chi-siamo. CTA renamed "Parliamone" → "Contattaci"/"Contact us" (scrolls to homepage form). 5 new bilingual pages built; AI Agents page driven by the Fulcrum_UseCase_Matrix (8 categories, 18 use cases with core-sector tags).
+- **Homepage tweaks** (2026-08-02): removed "AI Transformation · Italia" eyebrow; fixed hero descender ("g") clipping (padding on masked lines); "Scopri i nostri servizi" → /ai-agents; contact form moved to centre of page (not before footer); enriched "Competenza verticale" section with lead copy + link to /settori.
+- **Footer overhaul** (2026-08-02): Servizi/Azienda/Legale columns with correct links, LinkedIn (company/fulrcum-ai-tech) + Instagram (fulcrum_tech_ai) icons, Registration Code 306318621, owner email.
+- **Admin owner email** = matteobianco.mb95@gmail.com (also the contact recipient).
+- **SendGrid email**: key configured; delivery blocked by 403 — sender `matteobianco.mb95@gmail.com` not yet a verified Sender Identity in SendGrid. Leads always saved.
 - **Anti-spam** (2026-08-02): hidden honeypot field + minimum time-on-form check on `POST /api/contact`; bot submissions are silently dropped (not saved, not emailed).
 - **Admin lead panel** (2026-08-02): protected route `/admin` (JWT Bearer auth, bcrypt, admin seeded from env, brute-force lockout). Dashboard lists all leads (newest first) with CSV export (`GET /api/admin/leads.csv`). Admin: `admin@fulcrum.it`. Endpoints: `/api/auth/login`, `/api/auth/me`, `/api/admin/leads`, `/api/admin/leads.csv`.
 - **SendGrid email integration** (2026-08-02): `POST /api/contact` stores each lead in MongoDB (`contact_leads`) and sends via SendGrid a notification to `CONTACT_RECIPIENT` (matteobianco.mb95@gmail.com) + a bilingual confirmation email to the submitter. **MOCKED/PENDING: actual email delivery is inactive until the user adds a real SENDGRID_API_KEY + verifies the sender, then redeploys.**

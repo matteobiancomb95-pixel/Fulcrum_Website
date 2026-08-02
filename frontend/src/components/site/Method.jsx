@@ -6,7 +6,7 @@ import { reveal, stagger, viewportOnce } from "../../lib/motion";
 export const Method = () => {
   const { t } = useLang();
   return (
-    <section id="chi-siamo" data-testid="method" className="section-y border-t hairline">
+    <section id="metodo" data-testid="method" className="section-y border-t hairline">
       <div className="fx-container">
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce}>
           <motion.p variants={reveal} className="eyebrow mb-4">{t.method.eyebrow}</motion.p>

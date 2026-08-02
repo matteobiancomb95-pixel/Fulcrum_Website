@@ -3,19 +3,24 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 export const CONTENT = {
   it: {
     skip: "Vai al contenuto",
-    nav: [
-      { label: "Servizi", href: "#servizi" },
-      { label: "Settori", href: "#settori" },
-      { label: "Chi siamo", href: "#chi-siamo" },
-      { label: "Risorse", href: "#risorse" },
-    ],
-    header: { cta: "Parliamone" },
+    nav: {
+      servizi: {
+        label: "Servizi",
+        items: [
+          { label: "AI Adoption", href: "/ai-adoption", desc: "Formazione aziendale sull'AI" },
+          { label: "Agenti AI", href: "/ai-agents", desc: "Use case di AI agentica" },
+          { label: "Servizi Digitali", href: "/servizi-digitali", desc: "Software, Web & Mobile app" },
+        ],
+      },
+      settori: { label: "Settori", href: "/settori" },
+      chiSiamo: { label: "Chi siamo", href: "/chi-siamo" },
+    },
+    header: { cta: "Contattaci", langAria: "Cambia lingua" },
     hero: {
-      eyebrow: "AI Transformation · Italia",
       lines: ["Driving", "AI Adoption"],
       sub: "Formiamo le persone e automatizziamo i processi con l'intelligenza artificiale.",
-      ctaPrimary: "Parliamone",
-      ctaSecondary: "Scopri i servizi",
+      ctaPrimary: "Contattaci",
+      ctaSecondary: "Scopri i nostri servizi",
     },
     metrics: [
       { value: 6, prefix: "< ", suffix: " mesi", label: "tempo medio di break-even" },
@@ -36,13 +41,13 @@ export const CONTENT = {
       heading: "Persone e processi, un unico fulcro.",
       cards: [
         {
-          eyebrow: "Persone", title: "AI Adoption",
+          eyebrow: "Persone", title: "AI Adoption", href: "/ai-adoption",
           desc: "Programmi strutturati per portare l'intelligenza artificiale nelle competenze di tutta l'organizzazione.",
           items: ["AI Leadership", "AI Upskilling per tutti i livelli", "Redazione AI Policy", "Programma AI Champion"],
           link: "Esplora AI Adoption",
         },
         {
-          eyebrow: "Processi", title: "AI Agents",
+          eyebrow: "Processi", title: "AI Agents", href: "/ai-agents",
           desc: "Agenti AI specializzati sulle aree a più alto impatto, con competenza specifica sul contesto italiano.",
           items: ["Finance & Document Automation", "Customer Operations", "Sales & Revenue Automation", "AI Governance & Compliance"],
           link: "Esplora AI Agents",
@@ -62,6 +67,9 @@ export const CONTENT = {
     sectors: {
       eyebrow: "Settori",
       heading: "Competenza verticale, non genericità.",
+      lead: "Non facciamo AI generica: ogni programma parte dai processi reali del tuo settore, dalle sue funzioni e dai suoi vincoli normativi. È la differenza tra un progetto che resta una demo e uno che entra in produzione.",
+      ctaLabel: "Esplora tutti i settori",
+      ctaHref: "/settori",
       list: ["Financial Services", "Healthcare & Pharma", "Consumer Goods & Retail", "Automotive & Mobility", "Manifatturiero", "Utilities & Energy", "Professional Services", "Pubblica Amministrazione"],
       marquee: ["Driving AI Adoption", "Persone", "Processi", "Effortless"],
     },
@@ -79,7 +87,7 @@ export const CONTENT = {
     },
     contact: {
       eyebrow: "Contatti",
-      heading: "Parliamone.",
+      heading: "Contattaci.",
       intro: "Raccontaci dove vuoi portare la tua azienda. Ti rispondiamo entro un giorno lavorativo con una proposta concreta.",
       labels: { nome: "Nome", azienda: "Azienda", email: "Email", dimensione: "Dimensione azienda", messaggio: "Messaggio" },
       placeholders: { nome: "Mario Rossi", azienda: "Nome azienda", email: "nome@azienda.it", messaggio: "Come possiamo aiutarti?", dimensione: "Seleziona…" },
@@ -105,11 +113,26 @@ export const CONTENT = {
     footer: {
       tagline: "Il fulcro della trasformazione AI. Formiamo le persone e automatizziamo i processi.",
       cols: [
-        { head: "Servizi", links: ["AI Adoption", "AI Agents", "AI Governance"] },
-        { head: "Azienda", links: ["Chi siamo", "Metodo", "Settori"] },
-        { head: "Risorse", links: ["Fiducia & Sicurezza", "Privacy Policy", "Cookie Policy"] },
+        { head: "Servizi", links: [
+          { label: "AI Adoption", href: "/ai-adoption" },
+          { label: "Agenti AI", href: "/ai-agents" },
+          { label: "Servizi Digitali", href: "/servizi-digitali" },
+        ]},
+        { head: "Azienda", links: [
+          { label: "Chi siamo", href: "/chi-siamo" },
+          { label: "Settori", href: "/settori" },
+          { label: "Contattaci", href: "/#contatti" },
+        ]},
+        { head: "Legale", links: [
+          { label: "Privacy Policy", href: "#" },
+          { label: "Cookie Policy", href: "#" },
+        ]},
       ],
-      rights: "P.IVA IT00000000000",
+      companyLabel: "Registration Code",
+      company: "306318621",
+      emailLabel: "Email",
+      email: "matteobianco.mb95@gmail.com",
+      rights: "Tutti i diritti riservati.",
       privacy: "Privacy Policy",
       cookie: "Cookie Policy",
     },
@@ -123,19 +146,24 @@ export const CONTENT = {
 
   en: {
     skip: "Skip to content",
-    nav: [
-      { label: "Services", href: "#servizi" },
-      { label: "Sectors", href: "#settori" },
-      { label: "About", href: "#chi-siamo" },
-      { label: "Resources", href: "#risorse" },
-    ],
-    header: { cta: "Let's talk" },
+    nav: {
+      servizi: {
+        label: "Services",
+        items: [
+          { label: "AI Adoption", href: "/ai-adoption", desc: "Corporate AI training" },
+          { label: "AI Agents", href: "/ai-agents", desc: "Agentic AI use cases" },
+          { label: "Digital Services", href: "/servizi-digitali", desc: "Software, Web & Mobile apps" },
+        ],
+      },
+      settori: { label: "Sectors", href: "/settori" },
+      chiSiamo: { label: "About", href: "/chi-siamo" },
+    },
+    header: { cta: "Contact us", langAria: "Change language" },
     hero: {
-      eyebrow: "AI Transformation · Italy",
       lines: ["Driving", "AI Adoption"],
       sub: "We train your people and automate your processes with artificial intelligence.",
-      ctaPrimary: "Let's talk",
-      ctaSecondary: "Explore services",
+      ctaPrimary: "Contact us",
+      ctaSecondary: "Discover our services",
     },
     metrics: [
       { value: 6, prefix: "< ", suffix: " months", label: "average time to break-even" },
@@ -156,13 +184,13 @@ export const CONTENT = {
       heading: "People and processes, a single fulcrum.",
       cards: [
         {
-          eyebrow: "People", title: "AI Adoption",
+          eyebrow: "People", title: "AI Adoption", href: "/ai-adoption",
           desc: "Structured programmes to embed artificial intelligence into the skills of your entire organisation.",
           items: ["AI Leadership", "AI Upskilling for every level", "AI Policy drafting", "AI Champion programme"],
           link: "Explore AI Adoption",
         },
         {
-          eyebrow: "Processes", title: "AI Agents",
+          eyebrow: "Processes", title: "AI Agents", href: "/ai-agents",
           desc: "AI agents specialised on the highest-impact areas, with deep expertise in the Italian context.",
           items: ["Finance & Document Automation", "Customer Operations", "Sales & Revenue Automation", "AI Governance & Compliance"],
           link: "Explore AI Agents",
@@ -182,6 +210,9 @@ export const CONTENT = {
     sectors: {
       eyebrow: "Sectors",
       heading: "Vertical expertise, not generic advice.",
+      lead: "We don't do generic AI: every programme starts from the real processes of your sector, its functions and its regulatory constraints. That's the difference between a project that stays a demo and one that reaches production.",
+      ctaLabel: "Explore all sectors",
+      ctaHref: "/settori",
       list: ["Financial Services", "Healthcare & Pharma", "Consumer Goods & Retail", "Automotive & Mobility", "Manufacturing", "Utilities & Energy", "Professional Services", "Public Administration"],
       marquee: ["Driving AI Adoption", "People", "Processes", "Effortless"],
     },
@@ -199,7 +230,7 @@ export const CONTENT = {
     },
     contact: {
       eyebrow: "Contact",
-      heading: "Let's talk.",
+      heading: "Contact us.",
       intro: "Tell us where you want to take your company. We reply within one business day with a concrete proposal.",
       labels: { nome: "Name", azienda: "Company", email: "Email", dimensione: "Company size", messaggio: "Message" },
       placeholders: { nome: "John Smith", azienda: "Company name", email: "name@company.com", messaggio: "How can we help?", dimensione: "Select…" },
@@ -225,11 +256,26 @@ export const CONTENT = {
     footer: {
       tagline: "The fulcrum of AI transformation. We train people and automate processes.",
       cols: [
-        { head: "Services", links: ["AI Adoption", "AI Agents", "AI Governance"] },
-        { head: "Company", links: ["About", "Method", "Sectors"] },
-        { head: "Resources", links: ["Trust & Security", "Privacy Policy", "Cookie Policy"] },
+        { head: "Services", links: [
+          { label: "AI Adoption", href: "/ai-adoption" },
+          { label: "AI Agents", href: "/ai-agents" },
+          { label: "Digital Services", href: "/servizi-digitali" },
+        ]},
+        { head: "Company", links: [
+          { label: "About", href: "/chi-siamo" },
+          { label: "Sectors", href: "/settori" },
+          { label: "Contact us", href: "/#contatti" },
+        ]},
+        { head: "Legal", links: [
+          { label: "Privacy Policy", href: "#" },
+          { label: "Cookie Policy", href: "#" },
+        ]},
       ],
-      rights: "VAT IT00000000000",
+      companyLabel: "Registration Code",
+      company: "306318621",
+      emailLabel: "Email",
+      email: "matteobianco.mb95@gmail.com",
+      rights: "All rights reserved.",
       privacy: "Privacy Policy",
       cookie: "Cookie Policy",
     },
@@ -243,7 +289,6 @@ export const CONTENT = {
 };
 
 const LangContext = createContext(null);
-
 const LANG_KEY = "fulcrum_lang";
 
 const getInitialLang = () => {
@@ -266,6 +311,7 @@ export const LanguageProvider = ({ children }) => {
     document.documentElement.lang = lang;
     try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* ignore */ }
   }, [lang]);
+
   return (
     <LangContext.Provider value={{ lang, setLang, toggle, t: CONTENT[lang] }}>
       {children}

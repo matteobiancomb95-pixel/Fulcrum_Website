@@ -1,20 +1,27 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import { LanguageProvider, useLang } from "@/i18n";
 import { Header } from "@/components/site/Header";
-import { Hero } from "@/components/site/Hero";
-import { Impact } from "@/components/site/Impact";
-import { Services } from "@/components/site/Services";
-import { Method } from "@/components/site/Method";
-import { Sectors } from "@/components/site/Sectors";
-import { Trust } from "@/components/site/Trust";
-import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 import { CookieBanner } from "@/components/site/CookieBanner";
+import Home from "@/pages/Home";
+import AiAdoption from "@/pages/AiAdoption";
+import AiAgents from "@/pages/AiAgents";
+import ServiziDigitali from "@/pages/ServiziDigitali";
+import Settori from "@/pages/Settori";
+import ChiSiamo from "@/pages/ChiSiamo";
 import AdminPage from "@/admin/AdminPage";
 
-function Site() {
+function ScrollManager() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (!hash) window.scrollTo(0, 0);
+  }, [pathname, hash]);
+  return null;
+}
+
+function SiteLayout() {
   const { t } = useLang();
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -37,15 +44,10 @@ function Site() {
       <a href="#hero" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] btn btn-primary !py-2 !px-4">
         {t.skip}
       </a>
+      <ScrollManager />
       <Header />
       <main>
-        <Hero />
-        <Impact />
-        <Services />
-        <Method />
-        <Sectors />
-        <Trust />
-        <Contact />
+        <Outlet />
       </main>
       <Footer />
       <CookieBanner />
@@ -58,7 +60,14 @@ function App() {
     <LanguageProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Site />} />
+          <Route element={<SiteLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/ai-adoption" element={<AiAdoption />} />
+            <Route path="/ai-agents" element={<AiAgents />} />
+            <Route path="/servizi-digitali" element={<ServiziDigitali />} />
+            <Route path="/settori" element={<Settori />} />
+            <Route path="/chi-siamo" element={<ChiSiamo />} />
+          </Route>
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>

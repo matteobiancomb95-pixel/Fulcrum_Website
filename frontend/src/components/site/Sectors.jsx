@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { useLang } from "../../i18n";
 import { reveal, stagger, viewportOnce } from "../../lib/motion";
 import { FulcrumMark } from "./Logo";
@@ -28,20 +30,26 @@ const MarqueeRow = ({ words }) => {
 
 export const Sectors = () => {
   const { t } = useLang();
+  const s = t.sectors;
   return (
-    <section id="settori" data-testid="sectors" className="section-y">
+    <section id="settori-preview" data-testid="sectors" className="section-y">
       <div className="mb-16 md:mb-24">
-        <MarqueeRow words={t.sectors.marquee} />
+        <MarqueeRow words={s.marquee} />
       </div>
       <div className="fx-container">
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce}>
-          <motion.p variants={reveal} className="eyebrow mb-4">{t.sectors.eyebrow}</motion.p>
-          <motion.h2 variants={reveal} className="h2 max-w-[18ch]">{t.sectors.heading}</motion.h2>
+          <div className="grid lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-end mb-12">
+            <div>
+              <motion.p variants={reveal} className="eyebrow mb-4">{s.eyebrow}</motion.p>
+              <motion.h2 variants={reveal} className="h2 max-w-[16ch]">{s.heading}</motion.h2>
+            </div>
+            <motion.p variants={reveal} className="text-lg" style={{ color: "var(--muted)" }}>{s.lead}</motion.p>
+          </div>
 
-          <motion.div variants={stagger} className="mt-12 flex flex-wrap gap-3">
-            {t.sectors.list.map((s, i) => (
+          <motion.div variants={stagger} className="flex flex-wrap gap-3">
+            {s.list.map((name, i) => (
               <motion.span
-                key={s}
+                key={name}
                 variants={reveal}
                 data-testid={`sector-${i}`}
                 tabIndex={0}
@@ -50,9 +58,16 @@ export const Sectors = () => {
                 onMouseEnter={(e) => { e.currentTarget.style.background = "var(--cta)"; e.currentTarget.style.color = "var(--copy-on-cta)"; e.currentTarget.style.borderColor = "var(--cta)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--copy)"; e.currentTarget.style.borderColor = "var(--copy)"; }}
               >
-                {s}
+                {name}
               </motion.span>
             ))}
+          </motion.div>
+
+          <motion.div variants={reveal} className="mt-10">
+            <Link to={s.ctaHref} data-testid="sectors-explore" className="group inline-flex items-center gap-2 font-medium" style={{ color: "var(--cta)" }}>
+              {s.ctaLabel}
+              <ArrowUpRight size={18} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </Link>
           </motion.div>
         </motion.div>
       </div>

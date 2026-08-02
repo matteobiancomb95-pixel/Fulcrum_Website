@@ -66,7 +66,7 @@ export const Contact = () => {
   const lblStyle = { color: "rgba(255,255,255,0.6)" };
 
   return (
-    <section id="parliamone" data-testid="contact" className="section-y" style={{ background: "var(--cta)", color: "var(--copy-on-cta)" }}>
+    <section id="contatti" data-testid="contact" className="section-y" style={{ background: "var(--cta)", color: "var(--copy-on-cta)" }}>
       <div className="fx-container">
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce} className="grid lg:grid-cols-[0.9fr_1.1fr] gap-14 lg:gap-20">
           <div>
