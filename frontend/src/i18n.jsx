@@ -89,6 +89,8 @@ export const CONTENT = {
         { k: "marketing", label: "Acconsento a ricevere comunicazioni marketing.", req: false },
       ],
       submit: "Invia messaggio",
+      submitting: "Invio in corso…",
+      errorGeneric: "Invio non riuscito. Riprova tra poco.",
       errors: {
         nome: "Inserisci il tuo nome.",
         azienda: "Inserisci il nome dell'azienda.",
@@ -207,6 +209,8 @@ export const CONTENT = {
         { k: "marketing", label: "I agree to receive marketing communications.", req: false },
       ],
       submit: "Send message",
+      submitting: "Sending…",
+      errorGeneric: "Couldn't send. Please try again shortly.",
       errors: {
         nome: "Please enter your name.",
         azienda: "Please enter your company name.",

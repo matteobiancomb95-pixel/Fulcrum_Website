@@ -1,21 +1,27 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { useLang } from "../../i18n";
 import { reveal, stagger, viewportOnce } from "../../lib/motion";
 
-const field = "w-full bg-transparent border-b pb-3 pt-2 text-lg placeholder:text-[rgba(255,255,255,0.5)] focus:outline-none transition-colors";
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+const field = "w-full bg-transparent border-b pb-3 pt-2 text-lg placeholder:text-[rgba(255,255,255,0.5)] focus:outline-none transition-colors disabled:opacity-60";
 
 export const Contact = () => {
-  const { t } = useLang();
+  const { lang, t } = useLang();
   const c = t.contact;
   const [form, setForm] = useState({ nome: "", azienda: "", email: "", dimensione: "", messaggio: "", privacy: false, marketing: false });
   const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const set = (k, v) => {
     setForm((f) => ({ ...f, [k]: v }));
     setErrors((e) => ({ ...e, [k]: undefined }));
+    setServerError("");
   };
 
   const validate = () => {
@@ -31,11 +37,21 @@ export const Contact = () => {
     return e;
   };
 
-  const onSubmit = (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
     const e = validate();
     setErrors(e);
-    if (Object.keys(e).length === 0) setSent(true);
+    if (Object.keys(e).length > 0) return;
+    setSubmitting(true);
+    setServerError("");
+    try {
+      await axios.post(`${API}/contact`, { ...form, lang });
+      setSent(true);
+    } catch (err) {
+      setServerError(c.errorGeneric);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const borderStyle = (k) => ({ borderColor: errors[k] ? "var(--copy-on-cta)" : "rgba(255,255,255,0.35)" });
@@ -132,10 +148,13 @@ export const Contact = () => {
                 ))}
               </div>
 
-              <button type="submit" data-testid="contact-submit" className="btn btn-onviolet mt-3 self-start">
-                {c.submit}
-                <ArrowRight size={18} />
-              </button>
+              <div className="mt-3">
+                <button type="submit" data-testid="contact-submit" disabled={submitting} className="btn btn-onviolet self-start disabled:opacity-70 disabled:cursor-not-allowed">
+                  {submitting ? c.submitting : c.submit}
+                  {!submitting && <ArrowRight size={18} />}
+                </button>
+                {serverError && <p data-testid="error-server" className="mt-3 text-sm font-medium">{serverError}</p>}
+              </div>
             </motion.form>
           )}
         </motion.div>

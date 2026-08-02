@@ -14,6 +14,7 @@ Production-ready single-page marketing site for **Fulcrum**, an Italian AI trans
 - 20px cards, 999px pill buttons, 1200px container, `clamp(80px,12vw,160px)` section rhythm.
 
 ## Implemented (2026-07-31)
+- **SendGrid email integration** (2026-08-02): `POST /api/contact` stores each lead in MongoDB (`contact_leads`) and sends via SendGrid a notification to `CONTACT_RECIPIENT` (matteobianco.mb95@gmail.com) + a bilingual confirmation email to the submitter. Frontend form now posts to the backend with loading/error states. Config via backend `.env`: `SENDGRID_API_KEY` (empty — user must fill), `SENDER_EMAIL`, `CONTACT_RECIPIENT`. Emails are skipped gracefully (lead still saved) until the key is set. **MOCKED/PENDING: actual email delivery is inactive until the user adds a real SENDGRID_API_KEY + verifies the sender, then redeploys.**
 - Sticky header (transparent→solid on scroll, hairline border), centred nav, violet pill CTA, mobile menu.
 - **Full i18n system** (`src/i18n.jsx`): functional IT/EN toggle in header (highlights active locale, updates `<html lang>`), complete English translations of every string across all sections + form + errors + cookie banner. Brand payoff "Driving AI Adoption" kept identical in both languages by design.
 - Hero: full-height, masked line-by-line reveal of "Driving AI Adoption", parallax SVG lever geometry cropped by viewport, two CTAs, scroll cue.
