@@ -1,0 +1,236 @@
+================================================================================
+FULCRUM — CRONOLOGIA CONVERSAZIONE
+Progetto: Sito marketing "Fulcrum — Driving AI Adoption"
+Piattaforma: Emergent (E1)
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────
+[1] UTENTE — Brief iniziale
+────────────────────────────────────────────────────────────────────────────
+Richiesta: costruire un sito marketing production-ready per FULCRUM, società
+di consulenza AI transformation con sede in Italia. Single-page con navigazione
+ad ancore, responsive, in italiano (con toggle EN stub nell'header).
+
+Contenuti principali del brief:
+- Brand: Fulcrum. Payoff "Driving AI Adoption". Mission/Vision fornite.
+  Concetto del fulcro/leva (sforzo minimo, sollevamento enorme).
+- Sistema colori STRICT (4 valori):
+    --cta #5B3DF5 / --bg #FFFFFF / --copy #000000 / --copy-on-cta #FFFFFF
+    (+ derivati: rgba nero 0.60/0.40/0.10, hover CTA #4A2FD6)
+- Tipografia: Poppins 400/500/700, dimensioni hero/heading/body/eyebrow definite.
+- Layout: container 1200px, ritmo sezioni clamp(80px,12vw,160px), radius 20px
+  card / 999px pill, molto whitespace (stile editoriale svizzero).
+- Struttura pagina: 1) header sticky 2) hero full-height 3) impact strip
+  (4 metriche con count-up) 4) two-pillar services (AI Adoption / AI Agents)
+  5) method (4 step timeline) 6) sectors (8 pill) 7) trust & security (3x2)
+  8) contact (form violet full-bleed) 9) footer.
+- Requisiti tecnici: HTML5 semantico, WCAG AA, focus visibili,
+  prefers-reduced-motion, IntersectionObserver reveal, meta/OG/JSON-LD,
+  cookie banner essential-only, Lighthouse perf>90 / a11y 100.
+- Reference: yellowtech.it (solo struttura/tono, NON palette/copy).
+- Allegati: BRAND_BOOK.md, fulcrum-tokens.css, logo/immagini.
+
+[Nota di sistema]: rendere il sito award-worthy (Awwwards), hero cinetico con
+reveal mascherato riga-per-riga, marquee editoriale, motion premium con
+framer-motion + lenis, parallax/3D sottile nell'hero.
+
+
+────────────────────────────────────────────────────────────────────────────
+[2] E1 — Domande di chiarimento + risposte utente
+────────────────────────────────────────────────────────────────────────────
+E1 ha chiesto: gestione form / toggle EN / geometria immagini.
+UTENTE ha risposto:
+- Form "Parliamone": SOLO validazione client-side, nessun invio reale.
+- Toggle EN: solo stub non funzionante.
+- Geometria (barra + pivot): composizioni SVG/CSS in codice (no stock photo).
+
+E1 — AZIONI:
+- Letti gli allegati (brand book, tokens).
+- Installate dipendenze: framer-motion, lenis.
+- Creato il sito single-page React con palette rigorosa a 4 colori:
+  * index.html (Poppins, meta, Open Graph, Twitter, JSON-LD Organization)
+  * index.css (design token, utility, pill buttons, marquee, reduced-motion)
+  * componenti: Logo (SVG mark leva+pivot), Header, Hero (reveal mascherato +
+    geometria parallax), Impact (count-up), Services (manifesto + 2 card),
+    Method (timeline con linea viola animata), Sectors (marquee + pill),
+    Trust (griglia 3x2 icone lucide viola), Contact (form validazione inline),
+    Footer, CookieBanner (essential-only, localStorage).
+- Verificato via screenshot tutte le sezioni + test validazione form. OK.
+
+RISULTATO: MVP completo, palette rispettata, tutte le 9 sezioni animate.
+
+
+────────────────────────────────────────────────────────────────────────────
+[3] UTENTE — "Traduzione EN: rendi il toggle EN funzionante con versione
+    inglese completa di tutti i testi"
+────────────────────────────────────────────────────────────────────────────
+E1 — AZIONI:
+- Creato sistema i18n completo (src/i18n.jsx): LanguageProvider + hook useLang.
+- Traduzione EN integrale di ogni testo (nav, hero, metriche, manifesto, card
+  servizi, metodo, settori, marquee, trust, form completo con errori e stato
+  di successo, footer, cookie banner).
+- Toggle in header funzionante: evidenzia in viola la lingua attiva (IT/EN),
+  aggiorna <html lang>, nel menu mobile "Switch to English / Passa all'italiano".
+- Payoff "Driving AI Adoption" mantenuto identico nelle due lingue.
+- Verificato via screenshot: dopo click EN, html lang="en" e tutti i testi in
+  inglese. Compilazione OK.
+
+
+────────────────────────────────────────────────────────────────────────────
+[4] SISTEMA — Notifica di deploy in produzione
+────────────────────────────────────────────────────────────────────────────
+L'app è stata deployata. Due ambienti:
+- PREVIEW (dev) — ambiente di lavoro.
+- PRODUCTION — https://fulcrum-ai-adoption.emergent.host
+
+
+────────────────────────────────────────────────────────────────────────────
+[5] UTENTE — "Add the SendGrid integration to my app."
+────────────────────────────────────────────────────────────────────────────
+E1 ha richiesto info (recipient, conferma al mittente, API key + sender).
+UTENTE ha risposto:
+- Email destinatario richieste form: matteobianco.mb95@gmail.com
+- Sì, invia email di conferma automatica al mittente.
+- API Key: (non ancora incollata in questo step)
+
+E1 — AZIONI (best judgment, senza chiave reale):
+- Installato SDK sendgrid, aggiornato requirements.txt.
+- backend/.env: SENDGRID_API_KEY (vuoto), SENDER_EMAIL, CONTACT_RECIPIENT.
+- server.py: endpoint POST /api/contact — salva il lead in MongoDB
+  (contact_leads) + invia notifica interna + conferma bilingue al mittente.
+  Gestione graceful se la chiave manca (lead salvato comunque).
+- Frontend Contact.jsx: invio al backend con stato loading + gestione errori.
+- Verificato via curl: submission valida -> success:true + lead salvato;
+  privacy mancante/email non valida -> 422. Flusso browser OK.
+- FLAG: email non attive finché non viene fornita la API key reale.
+
+
+────────────────────────────────────────────────────────────────────────────
+[6] UTENTE — 4 next action items selezionati
+────────────────────────────────────────────────────────────────────────────
+  1. Attiva le Email (incolla SendGrid API Key)
+  2. Lingua ricordata (memoria + auto-EN per browser non italiani)
+  3. Anti-spam (protezione anti-bot nel form)
+  4. Pannello Lead (pagina admin protetta per vedere/scaricare le richieste)
+
+E1 ha chiesto: API key + credenziali admin. UTENTE: "Scegli tu email+password".
+(Chiave non ancora fornita in questo step.)
+
+E1 — AZIONI:
+- Ottenuto playbook auth JWT (integration_expert).
+- Generati JWT_SECRET e password admin.
+- backend/.env: JWT_SECRET, ADMIN_EMAIL=admin@fulcrum.it, ADMIN_PASSWORD.
+- server.py: auth JWT (bcrypt, seed admin idempotente, brute-force lockout),
+  endpoint /api/auth/login, /api/auth/me, /api/admin/leads, /api/admin/leads.csv.
+  Anti-spam: honeypot nascosto + controllo tempo minimo sul form.
+- i18n.jsx: memoria lingua (localStorage) + auto-detect EN per browser non-IT.
+- Contact.jsx: campo honeypot + elapsed_ms.
+- Nuova pagina /admin (AdminPage.jsx): login + tabella lead + export CSV.
+- App.js: aggiunto react-router (/ e /admin).
+- Verificato: login OK, /admin/leads protetto (401 senza token), honeypot e
+  time-check scartano i bot, CSV corretto, UI admin funzionante.
+
+Credenziali admin comunicate:
+  URL /admin — admin@fulcrum.it — Fulcrum-uBJJj-63eo0
+
+
+────────────────────────────────────────────────────────────────────────────
+[7] UTENTE — Richiesta ampia multi-parte
+────────────────────────────────────────────────────────────────────────────
+Richieste:
+- Collegare dominio già registrato fulcrum.lt
+- Ogni modifica contenuto sia in IT che in EN
+- Header con menù a tendina:
+    Servizi -> AI Adoption (pagina /ai-adoption), Agenti AI (pagina /ai-agents,
+    use case dal file Fulcrum_UseCase_Matrix), Servizi Digitali (Software ad hoc
+    CRM/ERP, Web App, Mobile App)
+    Settori -> pagina /settori (spunto da yellowtech.it/settori)
+    Chi siamo -> spunto da yellowtech.it/chi-siamo
+- CTA da "Parliamone" a "Contattaci" (rimanda al form)
+- Form al CENTRO della homepage (non prima del footer)
+- Togliere "AI Transformation Italia"
+- Risolvere la "g" tagliata in "Driving AI Adoption"
+- "Scopri i nostri servizi" -> /ai-agents
+- Arricchire "Competenza verticale, non genericità"
+- Footer aggiornato con sezioni linkate correttamente
+- Logo Instagram: https://www.instagram.com/fulcrum_tech_ai?utm_source=website
+- LinkedIn: https://www.linkedin.com/company/fulrcum-ai-tech/?utm_source=website
+- Registration Code 306318621
+- Email proprietaria: matteobianco.mb95@gmail.com (destinatario form + username
+  pannello admin)
+- SendGrid API Key: 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
+
+UTENTE ha poi caricato: Fulcrum_UseCase_Matrix.xlsx
+
+E1 — AZIONI:
+- Estratto integralmente il file Fulcrum_UseCase_Matrix.xlsx.
+- Studiate le pagine yellowtech.it/settori e /chi-siamo.
+- backend/.env: inserita SendGrid API Key reale, SENDER_EMAIL e CONTACT_RECIPIENT
+  = matteobianco.mb95@gmail.com, ADMIN_EMAIL = matteobianco.mb95@gmail.com.
+- Ristrutturazione MULTI-PAGINA (react-router) con layout condiviso
+  (Header + Outlet + Footer + CookieBanner + Lenis + ScrollManager).
+- Contenuti bilingue: src/content/pagesIt.js, pagesEn.js, pages.js (usePages).
+- Header riscritto: dropdown "Servizi" (AI Adoption/Agenti AI/Servizi Digitali)
+  + Settori + Chi siamo; CTA "Contattaci/Contact us" -> form homepage.
+- Nuove pagine: /ai-adoption, /ai-agents (8 categorie, 18 use case dalla matrix
+  con tag settori core), /servizi-digitali (Software ad hoc, Web App, Mobile App),
+  /settori (8 industry, AI Adoption + AI Agents per settore), /chi-siamo
+  (mission/vision/approccio/tecnologie).
+- Homepage: rimosso eyebrow "AI Transformation · Italia"; fix taglio "g" (padding
+  sulle righe mascherate); "Scopri i nostri servizi" -> /ai-agents; form spostato
+  al centro; sezione "Competenza verticale" arricchita + link a /settori.
+- Footer: colonne Servizi/Azienda/Legale con link corretti, icone LinkedIn +
+  Instagram (link forniti), Registration Code 306318621, email proprietaria.
+- Verificato via screenshot (tutte le pagine, dropdown, form centrato, footer) e
+  curl (admin login con nuova email OK, lead salvati).
+
+DUE AZIONI RIMASTE ALL'UTENTE:
+  1. Email SendGrid: chiave OK ma SendGrid risponde 403 "The from address does
+     not match a verified Sender Identity" -> verificare il mittente
+     matteobianco.mb95@gmail.com su SendGrid (Single Sender Verification).
+     I lead vengono comunque sempre salvati e visibili in /admin.
+  2. Dominio fulcrum.lt: azione nel pannello di deploy (non collegabile dal
+     codice). Passi ufficiali (supporto Emergent): flusso "Link domain -> Entri"
+     nelle impostazioni di deployment; al registrar rimuovere tutti i record A;
+     SSL automatico; propagazione DNS 5-15 min (max 24h).
+
+Nota deploy: le modifiche sono nel PREVIEW; serve un REDEPLOY per portarle in
+produzione, con le variabili .env impostate nell'ambiente di produzione.
+
+
+────────────────────────────────────────────────────────────────────────────
+[8] UTENTE — "forniscimi codice sorgente del sito"
+────────────────────────────────────────────────────────────────────────────
+E1 (via supporto Emergent) — opzioni ufficiali di export del codice:
+- Metodo consigliato: "Save to GitHub" (collega GitHub, push del codice,
+  scarica/clona dal repository). Richiede piano a pagamento.
+- Alternative: vista VS Code (visualizza/copia i singoli file); git clone dopo
+  il push su GitHub.
+- Tutti i file del progetto (frontend React + backend FastAPI) sono inclusi.
+
+
+────────────────────────────────────────────────────────────────────────────
+[9] UTENTE — "puoi almeno restituirmi in un file txt la cronologia della chat?"
+────────────────────────────────────────────────────────────────────────────
+E1 — Creato questo file: /app/chat_history.txt
+
+
+================================================================================
+STATO ATTUALE DEL PROGETTO
+================================================================================
+Stack: React (react-router, framer-motion, lenis, Tailwind/shadcn) + FastAPI +
+       MongoDB.
+Pagine: / (home), /ai-adoption, /ai-agents, /servizi-digitali, /settori,
+        /chi-siamo, /admin.
+Lingue: IT/EN complete, con memoria della scelta e auto-detect.
+Form contatti: salva lead in MongoDB + (SendGrid) notifica + conferma —
+               invio email in attesa di verifica sender su SendGrid.
+Admin: /admin — matteobianco.mb95@gmail.com — Fulcrum-uBJJj-63eo0
+Palette: rigorosamente i 4 valori del brand.
+
+Azioni aperte lato utente:
+  1. Verificare il sender su SendGrid per attivare l'invio email.
+  2. Collegare il dominio fulcrum.lt dal pannello di deploy.
+  3. Eseguire un redeploy per portare in produzione le ultime modifiche.
+================================================================================
