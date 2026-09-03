@@ -39,14 +39,14 @@ Production-ready single-page marketing site for **Fulcrum**, an Italian AI trans
 ## Deployment fixes (2026-09-03)
 - **Root `/health` probe** added directly on `app` (not under `/api` prefix) in `server.py` — Kubernetes readiness/liveness probe was 404'ing (then "connection refused") against `http://127.0.0.1:8001/health`, blocking production deploy to `fulcrum-ai-adoption.emergent.host`. Returns `{"status":"ok"}`. Verified via `testing_agent` iteration_2 (32/32 pytest pass, stable).
 - **CORS_ORIGINS** extended to include `https://fulcrum.lt` and `https://www.fulcrum.lt` (custom domain) alongside existing preview/prod/localhost origins.
-- **Custom domain `fulcrum.lt` blank page**: user manually added A/CNAME DNS records at registrar (iv.lt) instead of using Emergent's guided "Entri" domain-linking flow. Advised via `support_agent`: remove manual DNS records, redo via Link Domain → Entri flow in Emergent UI, wait for propagation (~15 min). Not a code issue; cannot be verified from sandbox.
+- **Custom domain `fulcrum.lt` connected** (2026-09-03): user redid domain link via Emergent's guided "Entri" flow after removing manual DNS records — confirmed working by user.
+- **Favicon/webmanifest added** (2026-09-03): generated from user-provided brand icon (violet rounded square, lever/pivot logo) — `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png` (180x180), `android-chrome-192x192.png`, `android-chrome-512x512.png`, `site.webmanifest` in `/app/frontend/public/`. Linked in `index.html` `<head>`. Verified 200 on all files + link tags present in served HTML.
 
 ## Backlog (P1/P2)
 - SendGrid 403: sender `matteobianco.mb95@gmail.com` still needs Single Sender Verification in SendGrid dashboard (leads always save regardless).
 - Minor (non-blocking, from iteration_2): elapsed_ms==0 spam-gate silently drops non-JS submissions; login lockout has no IP-level throttle (per-email only); CookieBanner occasionally stays visible after "Accetta" (intermittent, low priority).
 - Dedicated service detail pages / resources content.
-- Favicon + webmanifest asset set from brand kit.
 
 ## Next tasks
-- Confirm fulcrum.lt resolves correctly after redoing domain link via Entri flow.
+- Redeploy to production so favicon + custom domain CORS fixes go live.
 - Awaiting user review/feedback on AI Adoption architecture.
