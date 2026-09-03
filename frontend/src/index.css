@@ -2,23 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Fulcrum — design tokens (brand kit)
+   Palette: #5B3DF5 · #FFFFFF · #000000 + opacità del nero.
+   Nessun gradiente, nessuna ombra, nessun blur.
+   ============================================================ */
 :root {
-    --cta: #5b3df5;
-    --bg: #ffffff;
-    --copy: #000000;
-    --copy-on-cta: #ffffff;
-    --cta-hover: #4a2fd6;
-    --muted: rgba(0, 0, 0, 0.6);
-    --faint: rgba(0, 0, 0, 0.4);
-    --hairline: rgba(0, 0, 0, 0.1);
+    --fc-accent: #5b3df5;
+    --fc-accent-hover: #4a2fd6;
+    --fc-bg: #ffffff;
+    --fc-copy: #000000;
+    --fc-copy-on-accent: #ffffff;
+    --fc-copy-muted: rgba(0, 0, 0, 0.6);
+    --fc-copy-faint: rgba(0, 0, 0, 0.4);
+    --fc-hairline: rgba(0, 0, 0, 0.1);
+    --fc-accent-06: rgba(91, 61, 245, 0.06);
+    --fc-on-accent-20: rgba(255, 255, 255, 0.2);
+    --fc-on-accent-70: rgba(255, 255, 255, 0.7);
 
-    --radius-card: 20px;
-    --radius-button: 999px;
-    --section-y: clamp(80px, 12vw, 160px);
-    --container: 1200px;
+    --fc-h1: clamp(2.5rem, 6vw, 4.75rem);
+    --fc-h1-long: clamp(2.125rem, 5vw, 3.75rem);
+    --fc-h2: clamp(1.875rem, 3.6vw, 3rem);
+    --fc-h3: 1.5rem;
+    --fc-h4: 1.125rem;
+    --fc-body: 1.0625rem;
+    --fc-body-lg: 1.25rem;
+    --fc-small: 0.9375rem;
+    --fc-label: 0.875rem;
+    --fc-caption: 0.8125rem;
+    --fc-proof: clamp(1.375rem, 2.4vw, 1.875rem);
 
-    --hero: clamp(2.75rem, 7vw, 5.5rem);
-    --h2: clamp(2rem, 4vw, 3.25rem);
+    --fc-section-y: clamp(80px, 12vw, 160px);
+    --fc-section-y-tight: clamp(56px, 8vw, 96px);
+    --fc-container: 1200px;
+    --fc-container-narrow: 760px;
+
+    --fc-radius-card: 20px;
+    --fc-radius-input: 12px;
+    --fc-radius-pill: 999px;
+    --fc-border: 1px solid var(--fc-hairline);
+
+    --fc-header-h: 72px;
+    --fc-input-h: 52px;
+    --fc-t: 200ms ease-out;
+    --fc-t-fast: 150ms ease-out;
+
+    /* legacy aliases (admin panel) */
+    --cta: var(--fc-accent);
+    --cta-hover: var(--fc-accent-hover);
+    --bg: var(--fc-bg);
+    --copy: var(--fc-copy);
+    --copy-on-cta: var(--fc-copy-on-accent);
+    --muted: var(--fc-copy-muted);
+    --faint: var(--fc-copy-faint);
+    --hairline: var(--fc-hairline);
+    --h2: var(--fc-h2);
 }
 
 * {
@@ -28,33 +66,40 @@
 html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
-    background: var(--bg);
-    color: var(--copy);
+    background: var(--fc-bg);
+    color: var(--fc-copy);
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-weight: 400;
-    font-size: 1.0625rem;
+    font-size: var(--fc-body);
     line-height: 1.6;
 }
 
-::selection {
-    background: var(--cta);
-    color: var(--copy-on-cta);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+    margin: 0;
 }
 
-/* Focus visibility for accessibility */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-[tabindex]:focus-visible {
-    outline: 2.5px solid var(--cta);
-    outline-offset: 3px;
-    border-radius: 6px;
+ul,
+ol {
+    padding: 0;
+    list-style: none;
+}
+
+::selection {
+    background: var(--fc-accent);
+    color: var(--fc-copy-on-accent);
 }
 
 a {
@@ -62,116 +107,355 @@ a {
     text-decoration: none;
 }
 
+:focus-visible {
+    outline: 2px solid var(--fc-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ---------- layout ---------- */
+.fc-container,
 .fx-container {
     width: 100%;
-    max-width: var(--container);
+    max-width: var(--fc-container);
     margin-inline: auto;
     padding-inline: 24px;
 }
-
+.fc-narrow {
+    width: 100%;
+    max-width: var(--fc-container-narrow);
+    margin-inline: auto;
+    padding-inline: 24px;
+}
 @media (min-width: 640px) {
-    .fx-container {
+    .fc-container,
+    .fx-container,
+    .fc-narrow {
         padding-inline: 40px;
     }
 }
+@media (min-width: 1024px) {
+    .fc-container,
+    .fx-container {
+        padding-inline: 64px;
+    }
+}
 
+.fc-section {
+    padding-block: var(--fc-section-y);
+}
+.fc-section-tight {
+    padding-block: var(--fc-section-y-tight);
+}
+.section-y {
+    padding-block: var(--fc-section-y);
+}
+
+/* ---------- typography ---------- */
+.fc-h1 {
+    font-size: var(--fc-h1);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+}
+.fc-h1-long {
+    font-size: var(--fc-h1-long);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+}
+.fc-h2,
+.h2 {
+    font-size: var(--fc-h2);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+.fc-h3 {
+    font-size: var(--fc-h3);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+}
+.fc-h4 {
+    font-size: var(--fc-h4);
+    font-weight: 500;
+    line-height: 1.4;
+}
+.fc-lead {
+    font-size: var(--fc-body-lg);
+    line-height: 1.55;
+    color: var(--fc-copy-muted);
+}
+.fc-small {
+    font-size: var(--fc-small);
+    line-height: 1.55;
+}
+.fc-muted {
+    color: var(--fc-copy-muted);
+}
+.fc-faint {
+    color: var(--fc-copy-faint);
+}
+.fc-eyebrow,
 .eyebrow {
-    font-size: 0.875rem;
+    font-size: var(--fc-label);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--faint);
+    color: var(--fc-copy-faint);
 }
-
-.h2 {
-    font-size: var(--h2);
+.fc-caption {
+    font-size: var(--fc-caption);
+    line-height: 1.45;
+    color: var(--fc-copy-faint);
+}
+.fc-proof-key {
+    font-size: var(--fc-proof);
     font-weight: 700;
+    line-height: 1.15;
     letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin: 0;
+    color: var(--fc-accent);
+    text-wrap: balance;
 }
 
-.section-y {
-    padding-block: var(--section-y);
-}
-
-/* Pill buttons */
+/* ---------- buttons ---------- */
+.fc-btn,
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    border-radius: var(--radius-button);
-    padding: 16px 32px;
+    gap: 8px;
+    height: 52px;
+    padding-inline: 24px;
+    border: 1px solid transparent;
+    border-radius: var(--fc-radius-pill);
+    font-size: var(--fc-small);
     font-weight: 500;
-    font-size: 1.0625rem;
+    line-height: 1;
     cursor: pointer;
-    border: none;
+    text-align: center;
     transition:
-        background-color 0.18s ease,
-        color 0.18s ease,
-        transform 0.18s ease,
-        border-color 0.18s ease;
-    will-change: transform;
+        background-color var(--fc-t),
+        border-color var(--fc-t),
+        color var(--fc-t);
 }
-
+.fc-btn-sm {
+    height: 44px;
+    padding-inline: 20px;
+}
+.fc-btn-primary,
 .btn-primary {
-    background: var(--cta);
-    color: var(--copy-on-cta);
+    background: var(--fc-accent);
+    color: var(--fc-copy-on-accent);
 }
+.fc-btn-primary:hover,
 .btn-primary:hover {
-    background: var(--cta-hover);
-    transform: translateY(-2px);
+    background: var(--fc-accent-hover);
 }
-
+.fc-btn-ghost,
 .btn-ghost {
     background: transparent;
-    color: var(--copy);
-    border: 1.5px solid var(--copy);
+    color: var(--fc-copy);
+    border-color: var(--fc-hairline);
 }
+.fc-btn-ghost:hover,
 .btn-ghost:hover {
-    transform: translateY(-2px);
+    border-color: var(--fc-copy);
+}
+.fc-btn-inverted {
+    background: var(--fc-copy-on-accent);
+    color: var(--fc-accent);
+}
+.fc-btn-inverted:hover {
+    color: var(--fc-accent-hover);
+}
+.fc-btn-inverted:focus-visible {
+    outline-color: #fff;
+}
+.fc-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
-.btn-onviolet {
-    background: var(--copy-on-cta);
-    color: var(--cta);
-}
-.btn-onviolet:hover {
-    transform: translateY(-2px);
-}
-
-/* Hairline */
-.hairline {
-    border-color: var(--hairline);
-}
-
-/* Marquee */
-.marquee {
+/* ---------- surfaces ---------- */
+.fc-card {
     display: flex;
-    width: max-content;
-    animation: marquee 38s linear infinite;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    padding: 24px;
+    border: var(--fc-border);
+    border-radius: var(--fc-radius-card);
+    background: var(--fc-bg);
+    transition: border-color var(--fc-t);
 }
-@keyframes marquee {
-    to {
-        transform: translateX(-50%);
+@media (min-width: 640px) {
+    .fc-card {
+        padding: 32px;
     }
 }
-.marquee-track:hover .marquee {
-    animation-play-state: paused;
+.fc-card:hover,
+.fc-card:focus-within {
+    border-color: var(--fc-accent);
+}
+.fc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border: var(--fc-border);
+    border-radius: var(--fc-radius-pill);
+    font-size: var(--fc-small);
+    font-weight: 500;
+    transition:
+        border-color var(--fc-t),
+        background-color var(--fc-t);
+}
+.hairline {
+    border-color: var(--fc-hairline);
 }
 
-/* Reduced motion */
+/* ---------- links & markers ---------- */
+.fc-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fc-accent);
+    font-size: var(--fc-small);
+    font-weight: 500;
+}
+.fc-arrow > svg,
+.fc-arrow > span[data-arrow] {
+    transition: transform var(--fc-t);
+}
+.group:hover .fc-arrow > svg,
+.fc-arrow:hover > svg {
+    transform: translateX(4px);
+}
+.fc-tri {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin-top: 0.55em;
+    background: var(--fc-accent);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.fc-square {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    margin-top: 0.6em;
+    background: var(--fc-hairline);
+}
+
+/* ---------- form ---------- */
+.fc-field {
+    width: 100%;
+    height: var(--fc-input-h);
+    padding-inline: 16px;
+    border: var(--fc-border);
+    border-radius: var(--fc-radius-input);
+    background: var(--fc-bg);
+    color: var(--fc-copy);
+    font:
+        400 1rem/1 "Poppins",
+        sans-serif;
+    transition: border-color var(--fc-t);
+}
+textarea.fc-field {
+    height: auto;
+    min-height: 140px;
+    padding: 14px 16px;
+    line-height: 1.55;
+    resize: vertical;
+}
+.fc-field:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+.fc-field:focus {
+    border-color: var(--fc-accent);
+    outline: 2px solid var(--fc-accent);
+    outline-offset: 2px;
+}
+.fc-field[aria-invalid="true"] {
+    border-color: var(--fc-copy);
+}
+select.fc-field {
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M5 7 10 0H0z' fill='%23000'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 44px;
+}
+
+/* ---------- faq ---------- */
+.fc-faq details {
+    border-bottom: var(--fc-border);
+}
+.fc-faq details:first-of-type {
+    border-top: var(--fc-border);
+}
+.fc-faq summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 0;
+    cursor: pointer;
+    font-size: var(--fc-h4);
+    font-weight: 500;
+    list-style: none;
+}
+.fc-faq summary::-webkit-details-marker {
+    display: none;
+}
+.fc-faq summary::after {
+    content: "";
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 0.5em;
+    background: var(--fc-accent);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    transform: rotate(90deg);
+    transition: transform var(--fc-t);
+}
+.fc-faq details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+/* ---------- legal body ---------- */
+.fc-legal h2 {
+    font-size: 1.375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    scroll-margin-top: 96px;
+}
+.fc-legal p {
+    max-width: 68ch;
+    margin-bottom: 12px;
+}
+.fc-legal a {
+    color: var(--fc-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 @media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
     *,
     *::before,
     *::after {
         animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
-        scroll-behavior: auto !important;
-    }
-    .marquee {
-        animation: none;
     }
 }

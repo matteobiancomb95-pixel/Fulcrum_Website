@@ -36,10 +36,17 @@ Production-ready single-page marketing site for **Fulcrum**, an Italian AI trans
 - Cookie banner (essential-only default, localStorage).
 - SEO: meta, Open Graph, Twitter, JSON-LD Organization. Accessibility: semantic HTML, focus rings, skip link, prefers-reduced-motion, aria labels, data-testids.
 
+## Deployment fixes (2026-09-03)
+- **Root `/health` probe** added directly on `app` (not under `/api` prefix) in `server.py` — Kubernetes readiness/liveness probe was 404'ing (then "connection refused") against `http://127.0.0.1:8001/health`, blocking production deploy to `fulcrum-ai-adoption.emergent.host`. Returns `{"status":"ok"}`. Verified via `testing_agent` iteration_2 (32/32 pytest pass, stable).
+- **CORS_ORIGINS** extended to include `https://fulcrum.lt` and `https://www.fulcrum.lt` (custom domain) alongside existing preview/prod/localhost origins.
+- **Custom domain `fulcrum.lt` blank page**: user manually added A/CNAME DNS records at registrar (iv.lt) instead of using Emergent's guided "Entri" domain-linking flow. Advised via `support_agent`: remove manual DNS records, redo via Link Domain → Entri flow in Emergent UI, wait for propagation (~15 min). Not a code issue; cannot be verified from sandbox.
+
 ## Backlog (P1/P2)
-- Real form submission (DB store / email via Resend) if lead capture is needed.
+- SendGrid 403: sender `matteobianco.mb95@gmail.com` still needs Single Sender Verification in SendGrid dashboard (leads always save regardless).
+- Minor (non-blocking, from iteration_2): elapsed_ms==0 spam-gate silently drops non-JS submissions; login lockout has no IP-level throttle (per-email only); CookieBanner occasionally stays visible after "Accetta" (intermittent, low priority).
 - Dedicated service detail pages / resources content.
 - Favicon + webmanifest asset set from brand kit.
 
 ## Next tasks
-- Awaiting user review/feedback.
+- Confirm fulcrum.lt resolves correctly after redoing domain link via Entri flow.
+- Awaiting user review/feedback on AI Adoption architecture.

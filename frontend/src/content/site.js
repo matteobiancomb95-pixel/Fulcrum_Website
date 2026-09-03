@@ -1,0 +1,417 @@
+// Contenuti condivisi del sito (chrome + moduli globali), IT ed EN.
+// Fonte: website/globali.md, glossario.md, architecture.md del brand kit Fulcrum.
+
+export const LINKEDIN = "https://www.linkedin.com/company/fulrcum-ai-tech/?utm_source=website";
+export const INSTAGRAM = "https://www.instagram.com/fulcrum_tech_ai?utm_source=website";
+export const ZCAL_EMBED = "https://zcal.co/i/JLglE-lS";
+export const REGISTRATION_CODE = "306318621";
+
+const AGENT_LINKS_IT = [
+  { label: "Fulcrum HR & Payroll Agent", href: "/ai-adoption/hr-payroll-agent" },
+  { label: "Fulcrum Administration & Finance Agent", href: "/ai-adoption/finance-agent" },
+  { label: "Fulcrum Procurement Agent", href: "/ai-adoption/procurement-agent" },
+  { label: "Fulcrum Marketing Agent", href: "/ai-adoption/marketing-agent" },
+  { label: "Fulcrum GTM Agent", href: "/ai-adoption/gtm-agent" },
+  { label: "Fulcrum Legal Agent", href: "/ai-adoption/legal-agent" },
+  { label: "Fulcrum Training Agent", href: "/ai-adoption/training-agent" },
+];
+
+const TRUST_IT = [
+  { icon: "shield", label: "GDPR" },
+  { icon: "doc", label: "Progettato per la conformità all'AI Act" },
+  { icon: "eu", label: "Dati in Europa" },
+  { icon: "log", label: "Logging e audit trail" },
+  { icon: "dpo", label: "DPO esterno su richiesta" },
+  { icon: "dpia", label: "Valutazione privacy (DPIA)" },
+];
+
+const TRUST_EN = [
+  { icon: "shield", label: "GDPR" },
+  { icon: "doc", label: "Designed for AI Act compliance" },
+  { icon: "eu", label: "Data in Europe" },
+  { icon: "log", label: "Logging and audit trail" },
+  { icon: "dpo", label: "External DPO on request" },
+  { icon: "dpia", label: "Privacy assessment (DPIA)" },
+];
+
+const TECH = ["OpenAI", "Anthropic", "Google", "Meta", "Mistral", "Microsoft Copilot", "n8n", "Azure", "AWS", "Google Cloud"];
+
+export const SITE = {
+  it: {
+    locale: "it_IT",
+    skip: "Vai al contenuto",
+    nav: {
+      ariaMain: "Principale",
+      services: {
+        label: "Servizi",
+        items: [
+          { label: "AI Adoption", href: "/ai-adoption", desc: "7 agenti per i processi chiave" },
+          { label: "AI Adoption per Enterprise", href: "/ai-adoption-enterprise", desc: "Fulcrum Custom Agent su misura" },
+          { label: "Servizi Digitali", href: "/servizi-digitali", desc: "Software, web e mobile app" },
+        ],
+      },
+      industries: { label: "Settori", href: "/settori" },
+      about: { label: "Chi siamo", href: "/chi-siamo" },
+      menuOpen: "Apri il menu",
+      menuClose: "Chiudi il menu",
+      langAria: "Lingua del sito",
+      langSwitch: "Switch to English",
+    },
+    cta: {
+      call: "Prenota una call",
+      demo: "Richiedi una demo",
+      scoping: "Prenota una call di scoping",
+      form: "Preferisci scrivere? Usa il form",
+      allAgents: "Tutti gli agenti",
+      allIndustries: "Tutti i settori",
+      exploreAgent: "Scopri l'agente",
+      exploreAria: (name) => `Scopri ${name}`,
+      openCalendar: "Apri il calendario",
+      catalogue: "Vedi il catalogo",
+      backHome: "Home",
+    },
+    contactHref: "/contatti",
+    trust: { eyebrow: "Fiducia e sicurezza", items: TRUST_IT },
+    tech: {
+      eyebrow: "Tecnologie",
+      heading: "Tecnologie che usiamo",
+      lead: "Siamo model-agnostic: scegliamo il modello e la piattaforma in base al caso d'uso, ai dati e ai vincoli della tua azienda, non a un accordo commerciale.",
+      items: TECH,
+    },
+    method: {
+      eyebrow: "Come lavoriamo",
+      steps: [
+        { n: "01", title: "Assessment", short: "Mappiamo processi, dati e sistemi per capire dove l'AI genera valore e dove no." },
+        { n: "02", title: "Design", short: "Disegniamo l'agente: cosa fa, con quali dati, con quali integrazioni e quali controlli." },
+        { n: "03", title: "Build", short: "Sviluppiamo e integriamo nei sistemi esistenti, testando con chi userà l'agente ogni giorno." },
+        { n: "04", title: "Adoption", short: "Portiamo l'agente nell'uso quotidiano, formiamo le persone e misuriamo i KPI concordati." },
+      ],
+    },
+    footer: {
+      tagline:
+        "Driving AI Adoption. Formiamo le persone e automatizziamo i processi con agenti AI integrati nei sistemi che usi già.",
+      cols: [
+        {
+          head: "Servizi",
+          links: [
+            { label: "AI Adoption", href: "/ai-adoption" },
+            { label: "AI Adoption per Enterprise", href: "/ai-adoption-enterprise" },
+            { label: "Servizi Digitali", href: "/servizi-digitali" },
+          ],
+        },
+        { head: "Agenti", links: AGENT_LINKS_IT },
+        {
+          head: "Azienda",
+          links: [
+            { label: "Settori", href: "/settori" },
+            { label: "Chi siamo", href: "/chi-siamo" },
+            { label: "Contatti", href: "/contatti" },
+          ],
+        },
+        {
+          head: "Legale",
+          links: [
+            { label: "Privacy Policy", href: "/privacy" },
+            { label: "Cookie Policy", href: "/cookie" },
+          ],
+        },
+      ],
+      cookiePrefs: "Preferenze cookie",
+      writeUs: "Scrivici",
+      writeUsCta: "Vai ai contatti",
+      regLabel: "Registration Code",
+      regValue: REGISTRATION_CODE,
+      rights: "Tutti i diritti riservati.",
+    },
+    cookie: {
+      title: "Cookie e contenuti di terze parti",
+      body: "Usiamo cookie tecnici necessari al funzionamento del sito. Solo con il tuo consenso carichiamo il calendario zcal nella pagina Contatti. Puoi cambiare idea quando vuoi.",
+      accept: "Accetta",
+      reject: "Rifiuta",
+      policy: "Cookie Policy",
+      policyHref: "/cookie",
+    },
+    form: {
+      legend: "* campo obbligatorio",
+      labels: {
+        nome: "Nome e cognome",
+        azienda: "Azienda",
+        email: "Email di lavoro",
+        dimensione: "Dimensione azienda",
+        argomento: "Di cosa vuoi parlare",
+        messaggio: "Messaggio",
+      },
+      placeholders: {
+        nome: "Nome e cognome",
+        azienda: "Ragione sociale",
+        email: "nome@azienda.it",
+        select: "Seleziona",
+        messaggio: "Quale processo ti pesa di più oggi?",
+      },
+      sizes: ["1-50 dipendenti", "51-200 dipendenti", "201-1000 dipendenti", "Oltre 1000 dipendenti"],
+      topics: [
+        "Fulcrum HR & Payroll Agent",
+        "Fulcrum Administration & Finance Agent",
+        "Fulcrum Procurement Agent",
+        "Fulcrum Marketing Agent",
+        "Fulcrum GTM Agent",
+        "Fulcrum Legal Agent",
+        "Fulcrum Training Agent",
+        "Fulcrum Custom Agent (Enterprise)",
+        "Servizi Digitali",
+        "Non so ancora",
+      ],
+      privacy: {
+        pre: "Ho letto la ",
+        link: "Privacy Policy",
+        post: " e acconsento al trattamento dei miei dati per ricevere una risposta.",
+      },
+      marketing: "Acconsento a ricevere aggiornamenti da Fulcrum. Facoltativo, revocabile in ogni momento.",
+      submit: "Invia messaggio",
+      submitting: "Invio in corso…",
+      note: "Ti rispondiamo entro un giorno lavorativo. Nessuna newsletter automatica.",
+      honeypot: "Non compilare questo campo",
+      errors: {
+        nome: "Inserisci il tuo nome",
+        azienda: "Inserisci il nome dell'azienda",
+        email: "Inserisci un indirizzo email valido",
+        dimensione: "Seleziona la dimensione dell'azienda",
+        privacy: "Devi accettare la Privacy Policy per inviare il messaggio",
+        generic: "Non siamo riusciti a inviare il messaggio. Riprova tra poco.",
+      },
+    },
+    notFound: {
+      metaTitle: "Pagina non trovata — Fulcrum",
+      metaDescription: "Questa pagina non esiste. Riparti dalla home, dai sette agenti di AI Adoption o dalla pagina Contatti.",
+      eyebrow: "Errore 404",
+      h1: "Questa pagina non esiste",
+      lead: "Il link è vecchio o l'indirizzo è sbagliato. Da qui puoi ripartire.",
+      links: [
+        { label: "Home", href: "/" },
+        { label: "AI Adoption: i 7 agenti", href: "/ai-adoption" },
+        { label: "Contatti", href: "/contatti" },
+      ],
+    },
+    thanks: {
+      metaTitle: "Grazie — Fulcrum",
+      metaDescription: "Abbiamo ricevuto il tuo messaggio. Ti rispondiamo entro un giorno lavorativo.",
+      eyebrow: "Messaggio inviato",
+      h1: "Grazie, messaggio ricevuto",
+      lead: "Ti rispondiamo entro un giorno lavorativo all'indirizzo che hai indicato. Se vuoi accorciare i tempi, scegli tu l'orario nel calendario.",
+      cta: "Prenota subito la call",
+      fallback: "Apri il calendario",
+      nextEyebrow: "Intanto",
+      nextHeading: "Da dove vuoi partire?",
+      next: [
+        { label: "I sette agenti di catalogo, uno per ogni processo", href: "/ai-adoption" },
+        { label: "Enterprise: Fulcrum Custom Agent, costruito sul tuo processo", href: "/ai-adoption-enterprise" },
+        { label: "Fulcrum su LinkedIn: come lavoriamo, in pubblico", href: LINKEDIN },
+      ],
+    },
+    calendar: {
+      title: "Calendario Fulcrum per prenotare una call",
+      blocked:
+        "Il calendario è caricato da zcal, un servizio esterno. Si carica qui solo se accetti i contenuti di terze parti, oppure puoi aprirlo in una nuova scheda.",
+      activate: "Accetta e carica il calendario",
+      newTabNote: "Il calendario si apre su zcal.co in una nuova scheda.",
+    },
+    breadcrumbAria: "Percorso",
+    scenarioLabel: "Scenario tipo",
+    scenarioNote: "Non è un caso cliente.",
+    scenarioToday: "Oggi",
+    scenarioWith: "Con l'agente",
+    kpiHeading: "KPI che misuriamo in assessment",
+    kpiNote: "Nessun valore promesso: si misurano in assessment.",
+    otherAgents: "Altri agenti del catalogo",
+    whenNot: "Quando non ha senso",
+  },
+
+  en: {
+    locale: "en_US",
+    skip: "Skip to content",
+    nav: {
+      ariaMain: "Main",
+      services: {
+        label: "Services",
+        items: [
+          { label: "AI Adoption", href: "/ai-adoption", desc: "7 agents for core processes" },
+          { label: "AI Adoption for Enterprise", href: "/ai-adoption-enterprise", desc: "Fulcrum Custom Agent, built to spec" },
+          { label: "Digital Services", href: "/servizi-digitali", desc: "Software, web and mobile apps" },
+        ],
+      },
+      industries: { label: "Industries", href: "/settori" },
+      about: { label: "About", href: "/chi-siamo" },
+      menuOpen: "Open menu",
+      menuClose: "Close menu",
+      langAria: "Site language",
+      langSwitch: "Passa all'italiano",
+    },
+    cta: {
+      call: "Book a call",
+      demo: "Request a demo",
+      scoping: "Book a scoping call",
+      form: "Prefer writing? Use the form",
+      allAgents: "All agents",
+      allIndustries: "All industries",
+      exploreAgent: "Explore the agent",
+      exploreAria: (name) => `Explore ${name}`,
+      openCalendar: "Open the calendar",
+      catalogue: "See the catalogue",
+      backHome: "Home",
+    },
+    contactHref: "/contatti",
+    trust: { eyebrow: "Trust and security", items: TRUST_EN },
+    tech: {
+      eyebrow: "Technologies",
+      heading: "Technologies we use",
+      lead: "We are model-agnostic: we pick the model and the platform based on the use case, the data and your constraints, not on a commercial agreement.",
+      items: TECH,
+    },
+    method: {
+      eyebrow: "How we work",
+      steps: [
+        { n: "01", title: "Assessment", short: "We map processes, data and systems to find where AI creates value and where it does not." },
+        { n: "02", title: "Design", short: "We design the agent: what it does, on which data, through which integrations and controls." },
+        { n: "03", title: "Build", short: "We develop and integrate into your existing systems, testing with the people who will use it." },
+        { n: "04", title: "Adoption", short: "We take the agent into daily use, train your people and measure the KPIs we agreed on." },
+      ],
+    },
+    footer: {
+      tagline:
+        "Driving AI Adoption. We train your people and automate your processes with AI agents that run inside the systems you already use.",
+      cols: [
+        {
+          head: "Services",
+          links: [
+            { label: "AI Adoption", href: "/ai-adoption" },
+            { label: "AI Adoption for Enterprise", href: "/ai-adoption-enterprise" },
+            { label: "Digital Services", href: "/servizi-digitali" },
+          ],
+        },
+        { head: "Agents", links: AGENT_LINKS_IT },
+        {
+          head: "Company",
+          links: [
+            { label: "Industries", href: "/settori" },
+            { label: "About", href: "/chi-siamo" },
+            { label: "Contact", href: "/contatti" },
+          ],
+        },
+        {
+          head: "Legal",
+          links: [
+            { label: "Privacy Policy", href: "/privacy" },
+            { label: "Cookie Policy", href: "/cookie" },
+          ],
+        },
+      ],
+      cookiePrefs: "Cookie preferences",
+      writeUs: "Write to us",
+      writeUsCta: "Go to contact",
+      regLabel: "Registration Code",
+      regValue: REGISTRATION_CODE,
+      rights: "All rights reserved.",
+    },
+    cookie: {
+      title: "Cookies and third-party content",
+      body: "We use technical cookies the site needs to work. Only with your consent do we load the zcal calendar on the Contact page. You can change your mind at any time.",
+      accept: "Accept",
+      reject: "Reject",
+      policy: "Cookie Policy",
+      policyHref: "/cookie",
+    },
+    form: {
+      legend: "* required field",
+      labels: {
+        nome: "Full name",
+        azienda: "Company",
+        email: "Work email",
+        dimensione: "Company size",
+        argomento: "What would you like to talk about",
+        messaggio: "Message",
+      },
+      placeholders: {
+        nome: "First and last name",
+        azienda: "Company name",
+        email: "name@company.com",
+        select: "Select",
+        messaggio: "Which process weighs on your team the most?",
+      },
+      sizes: ["1-50 employees", "51-200 employees", "201-1000 employees", "More than 1000 employees"],
+      topics: [
+        "Fulcrum HR & Payroll Agent",
+        "Fulcrum Administration & Finance Agent",
+        "Fulcrum Procurement Agent",
+        "Fulcrum Marketing Agent",
+        "Fulcrum GTM Agent",
+        "Fulcrum Legal Agent",
+        "Fulcrum Training Agent",
+        "Fulcrum Custom Agent (Enterprise)",
+        "Digital Services",
+        "Not sure yet",
+      ],
+      privacy: {
+        pre: "I have read the ",
+        link: "Privacy Policy",
+        post: " and consent to the processing of my data so that Fulcrum can reply.",
+      },
+      marketing: "I agree to receive updates from Fulcrum. Optional, you can withdraw it at any time.",
+      submit: "Send message",
+      submitting: "Sending…",
+      note: "We reply within one business day. No automatic newsletter.",
+      honeypot: "Do not fill in this field",
+      errors: {
+        nome: "Enter your name",
+        azienda: "Enter your company name",
+        email: "Enter a valid email address",
+        dimensione: "Select your company size",
+        privacy: "You need to accept the Privacy Policy to send the message",
+        generic: "We could not send your message. Please try again shortly.",
+      },
+    },
+    notFound: {
+      metaTitle: "Page not found — Fulcrum",
+      metaDescription: "This page does not exist. Start again from the home page, the seven AI Adoption agents or the Contact page.",
+      eyebrow: "Error 404",
+      h1: "This page does not exist",
+      lead: "The link is old or the address is wrong. You can start again from here.",
+      links: [
+        { label: "Home", href: "/" },
+        { label: "AI Adoption: the 7 agents", href: "/ai-adoption" },
+        { label: "Contact", href: "/contatti" },
+      ],
+    },
+    thanks: {
+      metaTitle: "Thank you — Fulcrum",
+      metaDescription: "We received your message. We reply within one business day.",
+      eyebrow: "Message sent",
+      h1: "Thank you, message received",
+      lead: "We reply within one business day at the address you gave us. If you want to move faster, pick your own slot in the calendar.",
+      cta: "Book the call now",
+      fallback: "Open the calendar",
+      nextEyebrow: "Meanwhile",
+      nextHeading: "Where do you want to start?",
+      next: [
+        { label: "The seven catalogue agents, one per process", href: "/ai-adoption" },
+        { label: "Enterprise: Fulcrum Custom Agent, built on your process", href: "/ai-adoption-enterprise" },
+        { label: "Fulcrum on LinkedIn: how we work, in public", href: LINKEDIN },
+      ],
+    },
+    calendar: {
+      title: "Fulcrum booking calendar",
+      blocked:
+        "The calendar is loaded from zcal, an external service. It shows here only if you accept third-party content, or you can open it in a new tab.",
+      activate: "Accept and load the calendar",
+      newTabNote: "The calendar opens on zcal.co in a new tab.",
+    },
+    breadcrumbAria: "Breadcrumb",
+    scenarioLabel: "Typical scenario",
+    scenarioNote: "Not a client case.",
+    scenarioToday: "Today",
+    scenarioWith: "With the agent",
+    kpiHeading: "KPIs we measure in the assessment",
+    kpiNote: "No value is promised: they are measured during the assessment.",
+    otherAgents: "Other agents in the catalogue",
+    whenNot: "When it does not make sense",
+  },
+};

@@ -1,0 +1,44 @@
+{
+  "summary": "Full backend + frontend E2E validation of the Fulcrum site after the architecture/content overhaul. Backend: 20 pytest cases (health, POST /api/contact incl. optional argomento/origine + empty messaggio, spam honeypot/time gates, privacy=422, auth login/me, bcrypt hash format, brute-force lockout, admin leads + CSV, 401 for unauthenticated) — all pass. Frontend (Playwright, desktop 1920x1080 + mobile 390x844): Servizi dropdown (3 items) and all nav/CTA links, homepage sections & 7 agent cards, /ai-adoption hub (7 cards + enterprise tile), all 7 agent detail pages with every required section (page-hero, problema, capacita, integrazione, cosa-cambia + agent-scenario, perchi, trust-strip, faq, cta-band, 3 working related cards), FAQ <details> expansion, /ai-agents and /en/ai-agents legacy redirects, all 5 IT<->EN slug round-trips, EN header/footer keep /en + translated slugs, zcal iframe gated by consent (both cookie-accept and calendar-activate paths), contact form validation + successful submit with EMPTY messaggio redirecting to /grazie and /en/thank-you (no 422 anymore), admin login + leads list + submitted leads visible, legal pages with anchored index, no 'matteobianco', no mailto on public pages, footer regcode, cookie prefs re-open, branded 404 IT/EN with 3 recovery links, mobile menu complete and zero horizontal overflow. No page errors or console errors anywhere.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/auth/login", "issue": "Brute-force lockout is keyed on request.client.host (rotating ingress pod IP behind the proxy), so the 5-attempt counter is split across several IPs: 14 sequential wrong-password attempts produced [401 x7, 429, 401, 429, ...] and DB showed two separate counters (count=3 each) for the same email. Effective protection is far weaker than 5 attempts and is trivially bypassable. Use X-Forwarded-For (first hop) and/or key the counter on the email alone."},
+      {"endpoint": "POST /api/contact", "issue": "Anti-bot time gate uses `0 < elapsed_ms < 1500`, so a bot sending elapsed_ms=0 (or omitting the field) bypasses it entirely — verified: lead with elapsed_ms=0 is stored."},
+      {"endpoint": "CORS / config", "issue": "CORS_ORIGINS defaults to '*' while allow_credentials=True — browsers reject that combination and it violates the auth playbook's explicit-origin requirement. Set the preview/production origin explicitly."},
+      {"endpoint": "Auth transport", "issue": "Playbook item 'httpOnly cookies set on login' is NOT implemented: /api/auth/login returns a Bearer JWT which the SPA keeps in web storage (XSS-exposed). Intentional design? Flagging as deviation, not blocking."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Header / Servizi dropdown", "issue": "The dropdown opens on mouseenter, so a real click on the 'Servizi' button toggles the already-open menu CLOSED (verified: right after clicking, #menu-servizi is absent from the DOM). Mouse users who click instead of hovering see the menu flash open then shut. Consider not toggling closed when the pointer is still inside the trigger.", "selector": "[data-testid=\"nav-servizi\"]", "priority": "MEDIUM"},
+      {"component": "Header (mobile menu)", "issue": "Mobile menu links (3 Servizi items, Settori, Chi siamo, CTA) have no data-testid, unlike their desktop counterparts — tests must fall back to text matching.", "selector": "[data-testid=\"mobile-menu\"] a", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Header @390px", "issues": ["The 'Prenota una call' CTA wraps onto two lines and sits flush against the FULCRUM wordmark, leaving almost no gutter between logo, CTA and hamburger; consider shortening the mobile CTA label or hiding it (it is already inside the mobile menu)."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Fix login rate-limit identifier (use X-Forwarded-For / email-based key) so lockout works behind the ingress proxy.",
+    "Harden the contact time gate: treat elapsed_ms == 0 (or missing) as suspicious instead of accepted.",
+    "Set CORS_ORIGINS to explicit origins since allow_credentials=True.",
+    "Make the 'Servizi' trigger click not close the hover-opened dropdown.",
+    "Add data-testid to the mobile menu links (optional, testability)."
+  ],
+  "critical_code_review_comments": [
+    "server.py: login attempt counter uses request.client.host — behind Kubernetes ingress this is the proxy pod IP and rotates, splitting the counter (observed). Rate limiting is therefore not reliable.",
+    "server.py: honeypot/time check returns success:true without storing — good — but elapsed_ms==0 short-circuits the check.",
+    "server.py is small and clean; Mongo queries all exclude _id and admin routes correctly depend on get_current_admin (401 verified for both /api/admin/leads and /api/admin/leads.csv).",
+    "Admin JWT is returned in the response body (no httpOnly cookie); if XSS-hardening matters, move to a cookie-based session."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100% (20/20 pytest)", "frontend": "100% of listed flows pass; 2 minor UI/testability issues + 1 mobile header spacing nit"},
+  "seed_data_creation": "Created and then deleted TEST_-prefixed contact leads (8 total, incl. 2 submitted via the UI form on /contatti and /en/contact) plus throwaway login_attempts records. DB cleaned: only the 4 pre-existing leads remain.",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "/app/memory/test_credentials.md — matteobianco.mb95@gmail.com / Fulcrum-uBJJj-63eo0 (valid, login 200, bcrypt hash starts with $2b$, seed_admin idempotent+password-refresh logic verified by code + successful login)",
+  "context_for_next_testing_agent": "Backend regression suite lives at /app/backend/tests/backend_test.py (pytest, uses REACT_APP_BACKEND_URL from /app/frontend/.env; classes: TestHealth/TestContact/TestAuth/TestAdmin). The brute-force test intentionally fires 16 attempts because the lockout counter is split across rotating ingress IPs. Remember to delete TEST_-prefixed leads from mongo (db.contact_leads) after runs — there is no delete API. All 29 routes, the 7 agent slugs, IT<->EN round-trips, consent-gated zcal iframe, contact form (IT+EN) and the admin panel were verified working in this iteration; re-verify only areas that change.",
+  "rca_of_the_issue": "Previously reported HTTP 422 on empty 'messaggio' is fixed: ContactRequest.messaggio is now Field(\"\", max_length=4000) and the UI submit with an empty message returns 200 and redirects to /grazie (IT) and /en/thank-you (EN) — confirmed end-to-end with the lead visible in the admin panel. The only real defect found is the rate-limit identifier: it is built from request.client.host, which behind the preview ingress is a rotating pod IP (observed 10.211.12.130 and 10.211.3.137 for the same login burst), so each IP accumulates its own count and 5-strike lockout does not reliably trigger."
+}

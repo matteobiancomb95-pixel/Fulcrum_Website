@@ -1,54 +1,75 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { Check } from "lucide-react";
-import { usePages } from "../content/pages";
-import { PageHero } from "../components/site/PageHero";
-import { CtaBand } from "../components/site/CtaBand";
-import { reveal, stagger, viewportOnce } from "../lib/motion";
+import { Seo } from "../components/fx/Seo";
+import { PageHero } from "../components/fx/PageHero";
+import { Reveal, SectionHead, ArrowLink } from "../components/fx/Bits";
+import { TriList } from "../components/fx/BlockGrid";
+import { TrustStrip } from "../components/fx/Strips";
+import { MethodSteps } from "../components/fx/MethodSteps";
+import { CtaBand } from "../components/fx/CtaBand";
+import { DIGITALI } from "../content/pages/digitali";
+import { useLang } from "../i18n";
 
 export default function ServiziDigitali() {
-  const p = usePages().serviziDigitali;
+  const { lang, t } = useLang();
+  const c = DIGITALI[lang];
+
   return (
     <>
-      <PageHero eyebrow={p.eyebrow} title={p.title} lead={p.lead} />
+      <Seo title={c.meta.title} description={c.meta.description} />
+      <PageHero
+        eyebrow={c.hero.eyebrow}
+        h1={c.hero.h1}
+        lead={c.hero.lead}
+        primary={{ label: t.cta.scoping, href: "/contatti" }}
+        secondary={{ label: t.cta.allAgents, href: "/ai-adoption" }}
+      />
 
-      <section data-testid="digital-services" className="section-y">
-        <div className="fx-container">
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce} className="grid md:grid-cols-3 gap-6">
-            {p.services.map((s, i) => (
-              <motion.article key={i} variants={reveal} data-testid={`digital-service-${i}`} className="rounded-[20px] border hairline p-8 flex flex-col transition-transform duration-300 hover:-translate-y-1" style={{ borderWidth: 1 }}>
-                <h3 className="m-0" style={{ fontSize: "1.3rem", fontWeight: 700, letterSpacing: "-0.01em" }}>{s.title}</h3>
-                <p className="mt-3" style={{ color: "var(--muted)" }}>{s.desc}</p>
-                <ul className="mt-6 flex flex-col gap-3">
-                  {s.points.map((pt) => (
-                    <li key={pt} className="flex items-start gap-3 text-[0.95rem]">
-                      <Check size={18} color="var(--cta)" className="mt-0.5 shrink-0" />
-                      <span>{pt}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.article>
+      <section className="fc-section-tight border-y hairline" style={{ borderTopWidth: 1, borderBottomWidth: 1 }} data-testid="dig-offerta">
+        <div className="fc-container">
+          <SectionHead eyebrow={c.offerta.eyebrow} heading={c.offerta.heading} lead={c.offerta.lead} className="max-w-[62ch]" />
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {c.offerta.cards.map((card, idx) => (
+              <Reveal key={card.title} delay={idx * 0.05} className="h-full">
+                <div className="fc-card" data-testid={`dig-card-${idx}`}>
+                  <h3 className="fc-h3">{card.title}</h3>
+                  <p className="fc-small fc-muted">{card.line}</p>
+                  <TriList items={card.bullets} className="mt-4" />
+                </div>
+              </Reveal>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      <section data-testid="digital-process" className="section-y border-t hairline">
-        <div className="fx-container">
-          <motion.h2 variants={reveal} initial="hidden" whileInView="show" viewport={viewportOnce} className="h2 max-w-[14ch] mb-14">{p.processTitle}</motion.h2>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce} className="grid sm:grid-cols-2 lg:grid-cols-5 gap-y-10 gap-x-8">
-            {p.process.map((m) => (
-              <motion.div key={m.n} variants={reveal}>
-                <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full text-[0.75rem] font-medium" style={{ background: "var(--cta)", color: "var(--copy-on-cta)" }}>{m.n}</span>
-                <h3 className="mt-5 m-0" style={{ fontSize: "1.15rem", fontWeight: 700 }}>{m.title}</h3>
-                <p className="mt-2 text-[0.95rem]" style={{ color: "var(--muted)" }}>{m.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+      <MethodSteps
+        eyebrow={c.processo.eyebrow}
+        heading={c.processo.heading}
+        lead={c.processo.lead}
+        steps={c.processo.steps}
+        testid="dig-processo"
+      />
+
+      <section className="fc-section-tight" data-testid="dig-ai-nativa">
+        <div className="fc-container">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <SectionHead eyebrow={c.aiNativa.eyebrow} heading={c.aiNativa.heading} />
+            <div>
+              <p className="fc-lead">{c.aiNativa.lead}</p>
+              <p className="fc-small fc-muted mt-6">{c.aiNativa.body}</p>
+              <div className="mt-8 flex flex-col gap-4 items-start">
+                {c.aiNativa.links.map((l) => (
+                  <ArrowLink key={l.href} to={l.href} testid={`dig-link-${l.href.replace(/\//g, "")}`}>
+                    {l.label}
+                  </ArrowLink>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <CtaBand title={p.ctaTitle} text={p.ctaText} />
+      <TrustStrip eyebrow={c.trust.eyebrow} heading={c.trust.heading} />
+      <CtaBand eyebrow={c.cta.eyebrow} heading={c.cta.heading} body={c.cta.body} ctaLabel={t.cta.scoping} />
     </>
   );
 }

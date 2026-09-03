@@ -1,48 +1,93 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { Check } from "lucide-react";
-import { usePages } from "../content/pages";
-import { PageHero } from "../components/site/PageHero";
-import { CtaBand } from "../components/site/CtaBand";
-import { reveal, stagger, viewportOnce } from "../lib/motion";
+import { Seo } from "../components/fx/Seo";
+import { PageHero } from "../components/fx/PageHero";
+import { Reveal, SectionHead } from "../components/fx/Bits";
+import { BlockGrid } from "../components/fx/BlockGrid";
+import { TrustStrip, SectorPills } from "../components/fx/Strips";
+import { MethodSteps } from "../components/fx/MethodSteps";
+import { AgentCard, TileLink } from "../components/fx/AgentCard";
+import { CtaBand } from "../components/fx/CtaBand";
+import { Faq } from "../components/fx/Faq";
+import { HUB } from "../content/pages/hub";
+import { AGENTS, agentCard } from "../content/agents";
+import { useLang } from "../i18n";
 
 export default function AiAdoption() {
-  const p = usePages().aiAdoption;
+  const { lang, t } = useLang();
+  const c = HUB[lang];
+
   return (
     <>
-      <PageHero eyebrow={p.eyebrow} title={p.title} lead={p.lead} stats={p.stats} />
+      <Seo title={c.meta.title} description={c.meta.description} />
+      <PageHero
+        eyebrow={c.hero.eyebrow}
+        h1={c.hero.h1}
+        lead={c.hero.lead}
+        primary={{ label: t.cta.call, href: "/contatti" }}
+        secondary={{ label: t.cta.demo, href: "/contatti#form" }}
+      />
 
-      <section data-testid="adoption-programs" className="section-y">
-        <div className="fx-container">
-          <motion.p variants={reveal} initial="hidden" whileInView="show" viewport={viewportOnce} className="eyebrow mb-10">{p.programsTitle}</motion.p>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce} className="grid md:grid-cols-2 gap-6">
-            {p.programs.map((pr, i) => (
-              <motion.article key={i} variants={reveal} data-testid={`program-${i}`} className="rounded-[20px] border hairline p-8 md:p-10 transition-transform duration-300 hover:-translate-y-1" style={{ borderWidth: 1 }}>
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full" style={{ background: "var(--cta)", color: "var(--copy-on-cta)", fontWeight: 700 }}>{i + 1}</span>
-                <h3 className="mt-6 m-0" style={{ fontSize: "1.4rem", fontWeight: 700, letterSpacing: "-0.01em" }}>{pr.title}</h3>
-                <p className="mt-3" style={{ color: "var(--muted)" }}>{pr.desc}</p>
-              </motion.article>
-            ))}
-          </motion.div>
+      <section className="fc-section-tight border-y hairline" style={{ borderTopWidth: 1, borderBottomWidth: 1 }} data-testid="hub-frame">
+        <div className="fc-container">
+          <SectionHead eyebrow={c.frame.eyebrow} heading={c.frame.heading} lead={c.frame.lead} className="max-w-[62ch]" />
+          <div className="mt-12">
+            <BlockGrid items={c.frame.items} cols={3} testid="hub-frame-items" />
+          </div>
         </div>
       </section>
 
-      <section data-testid="adoption-method" className="section-y border-t hairline">
-        <div className="fx-container">
-          <motion.h2 variants={reveal} initial="hidden" whileInView="show" viewport={viewportOnce} className="h2 max-w-[16ch] mb-14">{p.methodTitle}</motion.h2>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={viewportOnce} className="grid md:grid-cols-4 gap-y-10 gap-x-8">
-            {p.method.map((m) => (
-              <motion.div key={m.n} variants={reveal}>
-                <span className="tabular-nums font-medium" style={{ color: "var(--cta)" }}>{m.n}</span>
-                <h3 className="mt-3 m-0" style={{ fontSize: "1.2rem", fontWeight: 700 }}>{m.title}</h3>
-                <p className="mt-2 text-[0.95rem]" style={{ color: "var(--muted)" }}>{m.desc}</p>
-              </motion.div>
+      <section className="fc-section" data-testid="hub-grid">
+        <div className="fc-container">
+          <SectionHead eyebrow={c.grid.eyebrow} heading={c.grid.heading} lead={c.grid.lead} className="max-w-[62ch]" />
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {AGENTS.map((a, idx) => (
+              <AgentCard key={a.slug} agent={agentCard(a, lang)} variant="full" delay={idx * 0.03} />
             ))}
-          </motion.div>
+            <TileLink {...c.grid.tile} delay={0.24} />
+          </div>
         </div>
       </section>
 
-      <CtaBand title={p.ctaTitle} text={p.ctaText} />
+      <section className="fc-section-tight" data-testid="hub-tratti">
+        <div className="fc-container">
+          <SectionHead eyebrow={c.tratti.eyebrow} heading={c.tratti.heading} className="max-w-[62ch]" />
+          <div className="mt-12">
+            <BlockGrid items={c.tratti.items} cols={2} testid="hub-tratti-items" />
+          </div>
+        </div>
+      </section>
+
+      <MethodSteps
+        id="metodo"
+        eyebrow={t.method.eyebrow}
+        heading={c.metodo.heading}
+        steps={t.method.steps.map((s, i) => ({ n: s.n, title: s.title, body: c.metodo.steps[i] }))}
+        note={c.metodo.note}
+        testid="hub-method"
+      />
+
+      <section className="fc-section-tight" data-testid="hub-perchi">
+        <div className="fc-container">
+          <SectionHead eyebrow={c.perChi.eyebrow} heading={c.perChi.heading} lead={c.perChi.lead} className="max-w-[62ch]" />
+          <div className="mt-12 grid gap-12 lg:grid-cols-2">
+            <div className="flex flex-col gap-5">
+              {c.perChi.roles.map((r, idx) => (
+                <Reveal key={r.head} delay={idx * 0.04}>
+                  <p className="fc-small">
+                    <span className="font-medium">{r.head}</span>
+                    <span className="fc-muted">{` — ${r.body}`}</span>
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+            <SectorPills items={c.perChi.pills} ctaLabel={t.cta.allIndustries} ctaHref="/settori" />
+          </div>
+        </div>
+      </section>
+
+      <TrustStrip eyebrow={c.trust.eyebrow} heading={c.trust.heading} />
+      <Faq eyebrow={c.faq.eyebrow} heading={c.faq.heading} items={c.faq.items} testid="hub-faq" />
+      <CtaBand eyebrow={c.cta.eyebrow} heading={c.cta.heading} body={c.cta.body} />
     </>
   );
 }

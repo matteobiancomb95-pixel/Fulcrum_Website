@@ -43,6 +43,11 @@ ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'admin123')
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -53,10 +58,12 @@ class ContactRequest(BaseModel):
     azienda: str = Field(..., min_length=1, max_length=160)
     email: EmailStr
     dimensione: str = Field(..., min_length=1, max_length=80)
-    messaggio: str = Field(..., min_length=1, max_length=4000)
+    argomento: str = Field("", max_length=120)
+    messaggio: str = Field("", max_length=4000)
     privacy: bool
     marketing: bool = False
     lang: str = "it"
+    origine: str = Field("", max_length=500)
     website: str = ""          # honeypot — must stay empty
     elapsed_ms: int = 0        # time on form before submit
 
@@ -76,7 +83,8 @@ class Lead(BaseModel):
     azienda: str
     email: str
     dimensione: str
-    messaggio: str
+    argomento: str = ""
+    messaggio: str = ""
     marketing: bool = False
     lang: str = "it"
     created_at: str
@@ -128,6 +136,7 @@ def _notification_html(d: ContactRequest) -> str:
         <tr><td style="padding:6px 0; color:rgba(0,0,0,0.6);">Azienda</td><td style="padding:6px 0;"><strong>{d.azienda}</strong></td></tr>
         <tr><td style="padding:6px 0; color:rgba(0,0,0,0.6);">Email</td><td style="padding:6px 0;"><a href="mailto:{d.email}" style="color:#5B3DF5;">{d.email}</a></td></tr>
         <tr><td style="padding:6px 0; color:rgba(0,0,0,0.6);">Dimensione</td><td style="padding:6px 0;">{d.dimensione}</td></tr>
+        <tr><td style="padding:6px 0; color:rgba(0,0,0,0.6);">Argomento</td><td style="padding:6px 0;">{d.argomento or "—"}</td></tr>
         <tr><td style="padding:6px 0; color:rgba(0,0,0,0.6);">Marketing</td><td style="padding:6px 0;">{"Sì" if d.marketing else "No"}</td></tr>
       </table>
       <div style="border:1px solid rgba(0,0,0,0.1); border-radius:16px; padding:16px; margin-top:16px;">
@@ -180,7 +189,7 @@ async def submit_contact(data: ContactRequest):
         raise HTTPException(status_code=422, detail="Privacy consent is required.")
 
     # Anti-bot: honeypot filled or submitted implausibly fast -> silently accept, drop
-    if data.website.strip() or (0 < data.elapsed_ms < 1500):
+    if data.website.strip() or data.elapsed_ms < 1500:
         logger.info("Spam submission dropped (honeypot/time).")
         return ContactResponse(success=True, emailed=False, message="ok")
 
@@ -188,6 +197,7 @@ async def submit_contact(data: ContactRequest):
         "id": str(uuid.uuid4()),
         "nome": data.nome, "azienda": data.azienda, "email": str(data.email),
         "dimensione": data.dimensione, "messaggio": data.messaggio,
+        "argomento": data.argomento, "origine": data.origine,
         "privacy": data.privacy, "marketing": data.marketing, "lang": data.lang,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -200,8 +210,11 @@ async def submit_contact(data: ContactRequest):
 @api_router.post("/auth/login")
 async def login(body: LoginRequest, request: Request):
     email = body.email.lower()
-    ip = request.client.host if request.client else "unknown"
-    identifier = f"{ip}:{email}"
+    # Lockout is keyed on the account: behind the ingress proxy the peer IP is a
+    # rotating pod address, so a per-IP counter never reaches the threshold.
+    identifier = email
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    ip = forwarded.split(",")[0].strip() or (request.client.host if request.client else "unknown")
 
     rec = await db.login_attempts.find_one({"identifier": identifier})
     if rec and rec.get("count", 0) >= 5:
@@ -213,7 +226,13 @@ async def login(body: LoginRequest, request: Request):
     if not user or not verify_password(body.password, user["password_hash"]):
         await db.login_attempts.update_one(
             {"identifier": identifier},
-            {"$inc": {"count": 1}, "$set": {"locked_until": (datetime.now(timezone.utc) + timedelta(minutes=15)).isoformat()}},
+            {
+                "$inc": {"count": 1},
+                "$set": {
+                    "locked_until": (datetime.now(timezone.utc) + timedelta(minutes=15)).isoformat(),
+                    "last_ip": ip,
+                },
+            },
             upsert=True,
         )
         raise HTTPException(status_code=401, detail="Credenziali non valide.")
@@ -237,7 +256,7 @@ async def list_leads(admin: dict = Depends(get_current_admin)):
 async def leads_csv(admin: dict = Depends(get_current_admin)):
     leads = await db.contact_leads.find({}, {"_id": 0}).sort("created_at", -1).to_list(5000)
     buf = io.StringIO()
-    cols = ["created_at", "nome", "azienda", "email", "dimensione", "marketing", "lang", "messaggio"]
+    cols = ["created_at", "nome", "azienda", "email", "dimensione", "argomento", "marketing", "lang", "messaggio"]
     writer = csv.DictWriter(buf, fieldnames=cols, extrasaction="ignore")
     writer.writeheader()
     for l in leads:
@@ -251,7 +270,7 @@ app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=[o.strip() for o in os.environ['CORS_ORIGINS'].split(',') if o.strip()],
     allow_methods=["*"],
     allow_headers=["*"],
 )

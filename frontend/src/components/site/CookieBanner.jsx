@@ -1,48 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "../../i18n";
-
-const KEY = "fulcrum_cookie_consent";
+import { useConsent } from "../../consent";
 
 export const CookieBanner = () => {
-  const { t } = useLang();
-  const ck = t.cookie;
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem(KEY)) {
-      const timer = setTimeout(() => setShow(true), 900);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  const decide = (value) => {
-    localStorage.setItem(KEY, value);
-    setShow(false);
-  };
+  const { t, path } = useLang();
+  const { bannerOpen, decide } = useConsent();
+  const c = t.cookie;
 
   return (
     <AnimatePresence>
-      {show && (
+      {bannerOpen && (
         <motion.div
-          data-testid="cookie-banner"
-          initial={{ y: 120, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 120, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-4 inset-x-4 md:inset-x-auto md:right-6 md:max-w-[420px] z-[60] rounded-[20px] border bg-white p-6"
-          style={{ borderColor: "var(--hairline)", borderWidth: 1, boxShadow: "0 8px 40px rgba(0,0,0,0.08)" }}
           role="dialog"
-          aria-label={ck.title}
+          aria-modal="false"
+          aria-labelledby="cookie-title"
+          data-testid="cookie-banner"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="fixed z-[200] rounded-[20px] p-6"
+          style={{
+            left: 24,
+            right: 24,
+            bottom: 24,
+            maxWidth: 720,
+            background: "var(--fc-bg)",
+            border: "1px solid var(--fc-hairline)",
+          }}
         >
-          <p className="font-medium">{ck.title}</p>
-          <p className="mt-2 text-[0.92rem]" style={{ color: "var(--muted)" }}>{ck.body}</p>
-          <div className="mt-5 flex gap-3">
-            <button data-testid="cookie-essential" onClick={() => decide("essential")} className="btn btn-ghost !py-2.5 !px-5 !text-[0.95rem]">
-              {ck.essential}
+          <p id="cookie-title" className="fc-h4">{c.title}</p>
+          <p className="fc-small fc-muted mt-2">
+            {c.body}{" "}
+            <Link to={path(c.policyHref)} className="underline" style={{ color: "var(--fc-accent)", textUnderlineOffset: 3 }}>
+              {c.policy}
+            </Link>
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <button type="button" onClick={() => decide("denied")} data-testid="cookie-reject" className="fc-btn fc-btn-ghost fc-btn-sm">
+              {c.reject}
             </button>
-            <button data-testid="cookie-accept" onClick={() => decide("all")} className="btn btn-primary !py-2.5 !px-5 !text-[0.95rem]">
-              {ck.accept}
+            <button type="button" onClick={() => decide("granted")} data-testid="cookie-accept" className="fc-btn fc-btn-primary fc-btn-sm">
+              {c.accept}
             </button>
           </div>
         </motion.div>
