@@ -124,8 +124,8 @@ export const SITE = {
       rights: "Tutti i diritti riservati.",
     },
     cookie: {
-      title: "Cookie e contenuti di terze parti",
-      body: "Usiamo cookie tecnici necessari al funzionamento del sito. Solo con il tuo consenso carichiamo il calendario zcal nella pagina Contatti. Puoi cambiare idea quando vuoi.",
+      title: "Cookie e misurazione",
+      body: "Usiamo cookie tecnici necessari al funzionamento del sito e, solo con il tuo consenso, carichiamo il calendario zcal nella pagina Contatti e Google Analytics 4 per capire come vengono usate le pagine. Puoi cambiare idea quando vuoi.",
       accept: "Accetta",
       reject: "Rifiuta",
       policy: "Cookie Policy",
@@ -313,8 +313,8 @@ export const SITE = {
       rights: "All rights reserved.",
     },
     cookie: {
-      title: "Cookies and third-party content",
-      body: "We use technical cookies the site needs to work. Only with your consent do we load the zcal calendar on the Contact page. You can change your mind at any time.",
+      title: "Cookies and measurement",
+      body: "We use technical cookies the site needs to work and, only with your consent, we load the zcal calendar on the Contact page and Google Analytics 4 to understand how pages are used. You can change your mind at any time.",
       accept: "Accept",
       reject: "Reject",
       policy: "Cookie Policy",

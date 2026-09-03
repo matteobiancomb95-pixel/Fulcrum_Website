@@ -33,10 +33,11 @@ export const LEGAL = {
           bullets: [
             "Form contatti: nome e cognome, azienda, email di lavoro, dimensione azienda, area di interesse, messaggio",
             "Prenotazione della call: nome, email e orario scelto, raccolti dal servizio di calendario zcal",
+            "Statistiche di utilizzo del sito tramite Google Analytics 4, solo se acconsenti ai cookie di misurazione",
             "Log tecnici dell'infrastruttura: dati necessari a servire le pagine e a proteggere il sito da abusi",
           ],
           paras: [
-            "Non usiamo strumenti di analisi statistica o di profilazione pubblicitaria: nessun dato di navigazione viene raccolto per misurare il traffico.",
+            "Solo se acconsenti ai cookie di misurazione, usiamo Google Analytics 4 per capire come le persone usano il sito (pagine visitate, provenienza, dispositivo): sono dati aggregati e Google applica la mascheratura dell'indirizzo IP.",
             "Non raccogliamo categorie particolari di dati e non chiediamo dati che non servono a risponderti. Il campo messaggio è libero: non inserire dati riservati o personali di altre persone.",
           ],
         },
@@ -73,6 +74,7 @@ export const LEGAL = {
           bullets: [
             "Fornitore di hosting e infrastruttura del sito",
             "zcal — calendario e gestione delle prenotazioni",
+            "Google Ireland Limited — Google Analytics 4, solo con il tuo consenso ai cookie di misurazione",
             "Fornitore di posta elettronica e di invio email transazionali",
           ],
           after: [
@@ -90,7 +92,7 @@ export const LEGAL = {
           id: "cookie",
           h2: "7. Cookie e contenuti di terze parti",
           paras: [
-            "Il sito usa solo cookie e memorie tecniche necessarie al funzionamento. Non carichiamo strumenti di misurazione statistica. Gli embed di terze parti, come il calendario zcal nella pagina Contatti, si caricano soltanto dopo il tuo consenso. L'elenco completo e il modo per cambiare scelta sono nella Cookie Policy.",
+            "Il sito usa cookie e memorie tecniche necessarie al funzionamento. Con il tuo consenso, carichiamo anche Google Analytics 4 per statistiche di utilizzo e il calendario zcal nella pagina Contatti. L'elenco completo e il modo per cambiare scelta sono nella Cookie Policy.",
           ],
         },
         {
@@ -153,10 +155,11 @@ export const LEGAL = {
           bullets: [
             "Contact form: full name, company, work email, company size, area of interest, message",
             "Call booking: name, email and chosen slot, collected by the zcal calendar service",
+            "Site usage statistics via Google Analytics 4, only if you consent to measurement cookies",
             "Infrastructure technical logs: data needed to serve the pages and protect the site from abuse",
           ],
           paras: [
-            "We use no analytics or advertising profiling tools: no browsing data is collected to measure traffic.",
+            "Only if you consent to measurement cookies, we use Google Analytics 4 to understand how people use the site (pages visited, referral source, device): this is aggregated data and Google applies IP masking.",
             "We do not collect special categories of data and we do not ask for anything we don't need to reply. The message field is free text: don't put confidential data or other people's personal data in it.",
           ],
         },
@@ -193,6 +196,7 @@ export const LEGAL = {
           bullets: [
             "Hosting and site infrastructure provider",
             "zcal — calendar and booking management",
+            "Google Ireland Limited — Google Analytics 4, only with your consent to measurement cookies",
             "Email provider and transactional email service",
           ],
           after: [
@@ -210,7 +214,7 @@ export const LEGAL = {
           id: "cookie",
           h2: "7. Cookies and third-party content",
           paras: [
-            "The site only uses cookies and technical storage needed to work. We load no analytics tools. Third-party embeds, such as the zcal calendar on the Contact page, load only after your consent. The full list and how to change your choice are in the Cookie Policy.",
+            "The site uses cookies and technical storage needed to work. With your consent, we also load Google Analytics 4 for usage statistics and the zcal calendar on the Contact page. The full list and how to change your choice are in the Cookie Policy.",
           ],
         },
         {
@@ -251,7 +255,7 @@ export const LEGAL = {
       meta: {
         title: "Cookie Policy — Fulcrum",
         description:
-          "Quali cookie usa il sito Fulcrum: solo tecnici, nessuno strumento di misurazione, embed zcal solo con consenso. Come accettare, rifiutare, cambiare idea.",
+          "Quali cookie usa il sito Fulcrum: tecnici sempre attivi, Google Analytics 4 ed embed zcal solo con consenso. Come accettare, rifiutare, cambiare idea.",
       },
       eyebrow: "Legale",
       h1: "Cookie Policy",
@@ -291,10 +295,16 @@ export const LEGAL = {
         },
         {
           id: "misurazione",
-          h2: "4. Nessuno strumento di misurazione",
+          h2: "4. Misurazione, solo con consenso",
           paras: [
-            "Questo sito non usa Google Analytics né altri strumenti di statistica o di profilazione pubblicitaria. Non installiamo cookie di terze parti per misurare il traffico e non incrociamo dati di navigazione con altre fonti.",
+            "Solo se acconsenti, usiamo Google Analytics 4 (Google Ireland Limited) per capire come le persone usano il sito: pagine visitate, provenienza, dispositivo. Sono dati aggregati e anonimizzati, con mascheratura dell'IP; non vendiamo né incrociamo questi dati con altre fonti.",
           ],
+          table: {
+            head: ["Nome", "Chi lo imposta", "A cosa serve", "Durata"],
+            rows: [
+              ["_ga, _ga_*", "Google Analytics 4 (solo con consenso)", "Distinguere le sessioni e i visitatori in forma aggregata", "Fino a 13 mesi"],
+            ],
+          },
         },
         {
           id: "terze-parti",
@@ -330,7 +340,7 @@ export const LEGAL = {
       meta: {
         title: "Cookie Policy — Fulcrum",
         description:
-          "Which cookies the Fulcrum site uses: technical ones only, no analytics tools, zcal embed with consent. How to accept, reject or change it.",
+          "Which cookies the Fulcrum site uses: technical cookies always on, Google Analytics 4 and the zcal embed only with consent. How to accept, reject or change it.",
       },
       eyebrow: "Legal",
       h1: "Cookie Policy",
@@ -370,10 +380,16 @@ export const LEGAL = {
         },
         {
           id: "misurazione",
-          h2: "4. No analytics tools",
+          h2: "4. Measurement, only with consent",
           paras: [
-            "This site uses neither Google Analytics nor any other analytics or advertising profiling tool. We set no third-party cookies to measure traffic and we do not combine browsing data with other sources.",
+            "Only if you consent, we use Google Analytics 4 (Google Ireland Limited) to understand how people use the site: pages visited, referral source, device. This is aggregated, anonymised data with IP masking; we do not sell it or combine it with other sources.",
           ],
+          table: {
+            head: ["Name", "Set by", "Purpose", "Duration"],
+            rows: [
+              ["_ga, _ga_*", "Google Analytics 4 (only with consent)", "Distinguish sessions and visitors in aggregate form", "Up to 13 months"],
+            ],
+          },
         },
         {
           id: "terze-parti",

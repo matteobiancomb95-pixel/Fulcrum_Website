@@ -42,11 +42,19 @@ Production-ready single-page marketing site for **Fulcrum**, an Italian AI trans
 - **Custom domain `fulcrum.lt` connected** (2026-09-03): user redid domain link via Emergent's guided "Entri" flow after removing manual DNS records — confirmed working by user.
 - **Favicon/webmanifest added** (2026-09-03): generated from user-provided brand icon (violet rounded square, lever/pivot logo) — `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png` (180x180), `android-chrome-192x192.png`, `android-chrome-512x512.png`, `site.webmanifest` in `/app/frontend/public/`. Linked in `index.html` `<head>`. Verified 200 on all files + link tags present in served HTML.
 
+## Analytics & SEO (2026-09-03)
+- **Google Analytics 4 added, consent-gated**: Measurement ID `G-LWC1S1S9CW`. `src/lib/ga4.js` loads gtag.js + sends page_view only after `useConsent().granted === true` (reuses existing zcal consent system, no new banner). Verified via screenshot/network trace: zero Google requests before consent; `gtag/js` + `google-analytics.com/g/collect` fire correctly after clicking "Accetta"; nothing loads if "Rifiuta".
+- **Cookie banner + legal pages updated** (IT/EN) to reflect GA4 usage: banner text, Privacy Policy (data collected, recipients incl. Google Ireland Ltd), Cookie Policy (section 4 renamed "Misurazione, solo con consenso" with `_ga`/`_ga_*` cookie table row).
+- **robots.txt + sitemap.xml** added at `/app/frontend/public/` referencing `fulcrum.lt` (all IT/EN routes + 7 agent detail pages) — prep for Google Search Console indexing (user will configure GSC property later).
+- **Custom domain `fulcrum.lt` connected** via Emergent's Entri flow (2026-09-03), confirmed working by user.
+- **Favicon/webmanifest** added from brand icon — see previous entry.
+
 ## Backlog (P1/P2)
 - SendGrid 403: sender `matteobianco.mb95@gmail.com` still needs Single Sender Verification in SendGrid dashboard (leads always save regardless).
 - Minor (non-blocking, from iteration_2): elapsed_ms==0 spam-gate silently drops non-JS submissions; login lockout has no IP-level throttle (per-email only); CookieBanner occasionally stays visible after "Accetta" (intermittent, low priority).
 - Dedicated service detail pages / resources content.
+- Google Search Console property + sitemap submission (user will do manually later).
 
 ## Next tasks
-- Redeploy to production so favicon + custom domain CORS fixes go live.
+- Redeploy to production so GA4 + sitemap/robots.txt go live on fulcrum.lt.
 - Awaiting user review/feedback on AI Adoption architecture.

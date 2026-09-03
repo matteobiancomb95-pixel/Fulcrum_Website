@@ -6,6 +6,7 @@ import { ConsentProvider } from "@/consent";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { CookieBanner } from "@/components/site/CookieBanner";
+import { Analytics } from "@/components/site/Analytics";
 import Home from "@/pages/Home";
 import AiAdoption from "@/pages/AiAdoption";
 import AgentPage from "@/pages/AgentPage";
@@ -54,6 +55,7 @@ function SiteLayout() {
         {t.skip}
       </a>
       <ScrollManager />
+      <Analytics />
       <Header />
       <main>
         <Outlet />
